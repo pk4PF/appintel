@@ -124,7 +124,10 @@ export default async function DashboardPage({ searchParams }: PageProps) {
             .limit(50);
 
         if (!error && data) {
-            apps = data as App[];
+            apps = data.map(d => ({
+                ...d,
+                categories: Array.isArray(d.categories) ? d.categories[0] : d.categories
+            })) as App[];
         }
     }
 
