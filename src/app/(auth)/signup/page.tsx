@@ -50,7 +50,7 @@ export default function SignUpPage() {
             <div className="w-full max-w-sm">
                 {/* Logo */}
                 <div className="text-center mb-8">
-                    <Link href="/" className="text-2xl font-bold">App Intel</Link>
+                    <Link href="/" className="text-2xl font-bold">AppGap</Link>
                     <p className="text-[#86868b] mt-2">Create your account</p>
                 </div>
 

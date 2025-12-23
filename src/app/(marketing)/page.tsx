@@ -8,7 +8,7 @@ export default function LandingPage() {
             {/* Navigation */}
             <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/10">
                 <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-                    <span className="text-xl font-bold">App Intel</span>
+                    <span className="text-xl font-black tracking-tighter">AppGap</span>
                     <div className="flex items-center gap-4">
                         <Link href="/login" className="text-sm text-[#86868b] hover:text-white transition-colors">
                             Sign In
@@ -23,23 +23,42 @@ export default function LandingPage() {
                 </div>
             </nav>
 
-            {/* Hero */}
-            <section className="pt-32 pb-20 px-6">
-                <div className="max-w-4xl mx-auto text-center">
+            {/* Hero - with Dark Horizon Glow pattern */}
+            <section className="pt-32 pb-20 px-6 relative overflow-hidden">
+                {/* Dark Horizon Glow Background */}
+                <div
+                    className="absolute inset-0 z-0"
+                    style={{
+                        background: "radial-gradient(125% 125% at 50% 100%, #000000 40%, #0d1a36 100%)",
+                    }}
+                />
+                {/* Subtle Dot Matrix Overlay */}
+                <div
+                    className="absolute inset-0 z-0 opacity-30"
+                    style={{
+                        backgroundColor: 'transparent',
+                        backgroundImage: `
+                            radial-gradient(circle at 25% 25%, #222222 0.5px, transparent 1px),
+                            radial-gradient(circle at 75% 75%, #111111 0.5px, transparent 1px)
+                        `,
+                        backgroundSize: '12px 12px',
+                    }}
+                />
+                <div className="max-w-4xl mx-auto text-center relative z-10">
                     <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#34c759]/10 border border-[#34c759]/20 rounded-full mb-8">
                         <span className="text-sm text-[#34c759]">🍎 Find iOS apps making real money</span>
                     </div>
 
-                    <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
-                        Find Your Next
-                        <span className="block bg-gradient-to-r from-[#007AFF] to-[#34c759] bg-clip-text text-transparent">
+                    <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6">
+                        Launch Your Next
+                        <span className="block bg-gradient-to-r from-[#5856d6] to-[#007AFF] bg-clip-text text-transparent">
                             iOS App Store Hit
                         </span>
                     </h1>
 
-                    <p className="text-xl text-[#86868b] max-w-2xl mx-auto mb-10">
-                        Discover profitable iOS app opportunities, analyze competitors, and get AI-powered spinoff ideas.
-                        Built for indie developers who want to build apps people actually pay for.
+                    <p className="text-xl text-[#86868b] max-w-2xl mx-auto mb-10 font-medium leading-relaxed">
+                        Find profitable app gaps in the App Store and get a full blueprint to build your next spinoff.
+                        Tech stacks, builder prompts, and marketing playbooks—included.
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -194,7 +213,7 @@ export default function LandingPage() {
             {/* Footer */}
             <footer className="py-8 px-6 border-t border-white/10">
                 <div className="max-w-5xl mx-auto flex items-center justify-between text-sm text-[#6e6e73]">
-                    <span>© 2025 App Intel</span>
+                    <span>© 2025 AppGap</span>
                     <div className="flex gap-6">
                         <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
                         <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>

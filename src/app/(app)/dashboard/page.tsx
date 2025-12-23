@@ -379,7 +379,7 @@ export default async function DiscoverPage({ searchParams }: PageProps) {
         const totalTrackedApps = totalCount || 0;
 
         return (
-            <div className="min-h-screen bg-black text-white" suppressHydrationWarning>
+            <div className="min-h-screen text-white" suppressHydrationWarning>
                 {/* Header */}
                 <div className="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-white/10">
                     <div className="px-8 py-6">
@@ -398,7 +398,7 @@ export default async function DiscoverPage({ searchParams }: PageProps) {
                 </div>
 
                 {/* Apps List */}
-                <div className="px-8 py-6">
+                <div className="px-8 py-6 relative z-10">
                     {/* Grid - 3 columns with good spacing */}
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                         {diverseItems.map((item, index) => (

@@ -10,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "App Intel - Discover App Opportunities",
-  description: "Find high-potential app ideas by analyzing iOS App Store trends, user reviews, and market gaps.",
+  title: "AppGap",
+  description: "Find high-potential app gaps in the App Store and get a full blueprint to build your next profitable spinoff.",
 };
 
 export default function RootLayout({

@@ -227,6 +227,7 @@ export interface Database {
           evidence: string[] | null;
           frequency: number;
           sentiment_score: number | null;
+          blueprint: Json | null;
           generated_at: string;
         };
         Insert: {

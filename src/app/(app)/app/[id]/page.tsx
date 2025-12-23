@@ -158,7 +158,7 @@ export default async function AppDetailPage({ params }: { params: Promise<{ id: 
   const mrr = calculateMRRFromMetrics(appData.pricing_model, appData.price, totalDownloads, appData.release_date);
 
   return (
-    <div className="min-h-screen bg-black text-white py-12 px-6">
+    <div className="min-h-screen text-white py-12 px-6">
       <div className="max-w-4xl mx-auto space-y-12">
 
         {/* Header Section */}

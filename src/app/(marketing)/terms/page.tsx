@@ -6,12 +6,12 @@ export default function TermsPage() {
 
             <section className="mb-8">
                 <h2 className="text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
-                <p>By using App Intel, you agree to these terms. If you don&apos;t agree, please do not use the service.</p>
+                <p>By using AppGap, you agree to these terms. If you don&apos;t agree, please do not use the service.</p>
             </section>
 
             <section className="mb-8">
                 <h2 className="text-2xl font-semibold mb-4">2. Description of Service</h2>
-                <p>App Intel provides market intelligence for iOS apps, including revenue estimates and spinoff ideas.</p>
+                <p>AppGap provides market intelligence for iOS apps, including revenue estimates and spinoff ideas.</p>
             </section>
 
             <section className="mb-8">

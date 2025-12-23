@@ -41,12 +41,12 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="p-6 border-b border-white/10">
         <Link href="/dashboard" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#007AFF] to-[#5AC8FA] flex items-center justify-center shadow-lg">
-            <span className="text-xl">📊</span>
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#5856D6] to-[#007AFF] flex items-center justify-center shadow-lg">
+            <span className="text-xl">🚀</span>
           </div>
           <div>
-            <h1 className="text-lg font-semibold text-white tracking-tight">App Intel</h1>
-            <p className="text-xs text-[#86868b]">Market Intelligence</p>
+            <h1 className="text-lg font-black text-white tracking-tighter">AppGap</h1>
+            <p className="text-[10px] text-[#86868b] font-bold uppercase tracking-widest">Find App Gaps</p>
           </div>
         </Link>
       </div>
@@ -61,8 +61,8 @@ export default function Sidebar() {
                 <Link
                   href={item.href}
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${isActive
-                      ? 'bg-white/10 text-white shadow-xl translate-y-[-1px]'
-                      : 'text-[#86868b] hover:text-white hover:bg-white/5'
+                    ? 'bg-white/10 text-white shadow-xl translate-y-[-1px]'
+                    : 'text-[#86868b] hover:text-white hover:bg-white/5'
                     }`}
                 >
                   <div className={isActive ? 'text-[#007AFF]' : 'group-hover:text-[#007AFF]'}>

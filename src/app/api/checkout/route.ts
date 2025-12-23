@@ -40,7 +40,7 @@ export async function POST(request: Request) {
                     price_data: {
                         currency: 'usd',
                         product_data: {
-                            name: 'App Intel - Lifetime Access',
+                            name: 'AppGap - Lifetime Access',
                             description: 'Unlimited access to app insights and spinoff ideas.',
                         },
                         unit_amount: 2900, // $29.00
