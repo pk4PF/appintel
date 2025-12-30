@@ -48,12 +48,6 @@ export default function LandingPage() {
                         <Link href="/login" className="text-sm text-[#86868b] hover:text-white transition-colors">
                             Sign In
                         </Link>
-                        <a
-                            href="#pricing"
-                            className="px-4 py-2 bg-[#007AFF] hover:bg-[#0A84FF] text-white text-sm font-medium rounded-full transition-colors"
-                        >
-                            Get Started
-                        </a>
                     </div>
                 </div>
             </nav>

@@ -107,16 +107,6 @@ export default function LoginPage() {
                     </button>
                 </form>
 
-                {/* Links */}
-                <div className="mt-6 text-center text-sm">
-                    <p className="text-[#a1a1a1]">
-                        Don&apos;t have an account?{' '}
-                        <Link href="/signup" className="text-[#8b5cf6] hover:underline">
-                            Sign up
-                        </Link>
-                    </p>
-                </div>
-
                 {/* Back to home */}
                 <div className="mt-8 text-center">
                     <Link href="/" className="text-sm text-[#6e6e73] hover:text-white transition-colors">
