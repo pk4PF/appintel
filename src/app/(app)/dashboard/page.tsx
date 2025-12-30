@@ -74,7 +74,7 @@ export default async function DashboardPage() {
                         <div>
                             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8b5cf6]/10 border border-[#8b5cf6]/20 mb-6">
                                 <div className="w-1 h-1 rounded-full bg-[#34c759]" />
-                                <span className="text-[10px] font-black text-[#8b5cf6] uppercase tracking-[0.2em]">Live Intelligence</span>
+                                <span className="text-[10px] font-black text-[#8b5cf6] uppercase tracking-[0.2em]">Live Gap Analysis</span>
                             </div>
                             <h1 className="text-4xl md:text-5xl font-black tracking-tighter mb-2">App Gap Explorer</h1>
                             <p className="text-[#a1a1a1] text-lg font-medium max-w-2xl">

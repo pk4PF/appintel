@@ -116,10 +116,10 @@ function transformAppToInsert(
   };
 }
 
-import { estimateAppGrowth, fetchTopAppIds } from '@/lib/app-intelligence';
+import { estimateAppGrowth, fetchTopAppIds } from '@/lib/app-gap';
 
 /**
- * Transform app result to metrics insert with intelligence estimates
+ * Transform app result to metrics insert with gapAnalysis estimates
  */
 function transformToMetrics(
   app: AppStoreAppResult,
@@ -133,7 +133,7 @@ function transformToMetrics(
   const releaseDate = app.releaseDate || app.released || null;
 
   // Use our new Intelligence Model
-  const intelligence = estimateAppGrowth(
+  const gapAnalysis = estimateAppGrowth(
     ratingCount,
     rating,
     categoryName,
@@ -147,8 +147,8 @@ function transformToMetrics(
     rating: rating ? Math.round(rating * 10) / 10 : null,
     rating_count: ratingCount,
     review_count: ratingCount,
-    downloads_estimate: intelligence.downloadsMonthly, // Monthly estimate for better "emergence" tracking
-    revenue_estimate: intelligence.revenueMonthly,
+    downloads_estimate: gapAnalysis.downloadsMonthly, // Monthly estimate for better "emergence" tracking
+    revenue_estimate: gapAnalysis.revenueMonthly,
   };
 }
 
@@ -244,7 +244,7 @@ async function upsertApp(
 
   // Handle Score calculations separately to ensure they use metrics
   try {
-    const intelligence = estimateAppGrowth(
+    const gapAnalysis = estimateAppGrowth(
       metricsData.rating_count || 0,
       metricsData.rating || 0,
       appData.category_id || 'Unknown',
@@ -256,8 +256,8 @@ async function upsertApp(
       .from('opportunity_scores')
       .upsert({
         app_id: app.id,
-        score: intelligence.gapScore,
-        momentum: intelligence.momentumScore,
+        score: gapAnalysis.gapScore,
+        momentum: gapAnalysis.momentumScore,
         demand_signal: Math.min(100, Math.round(Math.log10((metricsData.rating_count || 0) + 1) * 20)),
         user_satisfaction: Math.round((metricsData.rating || 0) * 20),
         monetization_potential: appData.pricing_model === 'subscription' ? 100 : 70,

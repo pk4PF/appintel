@@ -129,7 +129,7 @@ export default function DashboardList({ apps }: DashboardListProps) {
                             <span className="text-xs text-[#86868b] truncate">{app.category}</span>
                         </div>
 
-                        {/* Intelligence Badges */}
+                        {/* Gap Analysis Indicators */}
                         <div className="flex items-center gap-3 mt-1 pt-3 border-t border-white/[0.03] w-full">
                             <div className="flex flex-col">
                                 <span className="text-[10px] text-[#6e6e73] uppercase tracking-tighter">MONTHLY DOWNLOADS</span>

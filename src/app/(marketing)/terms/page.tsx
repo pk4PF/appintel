@@ -11,7 +11,7 @@ export default function TermsPage() {
 
             <section className="mb-8">
                 <h2 className="text-2xl font-semibold mb-4">2. Description of Service</h2>
-                <p>AppGap provides market intelligence for iOS apps, including revenue estimates and spinoff ideas.</p>
+                <p>AppGap provides market gap analysis for iOS apps, including revenue estimates and spinoff ideas.</p>
             </section>
 
             <section className="mb-8">

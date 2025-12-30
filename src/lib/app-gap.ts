@@ -1,11 +1,11 @@
 /**
- * App Intelligence Engine
+ * App Gap Analysis Engine
  * 
  * Provides estimated metrics (downloads, revenue, momentum) using public signals.
  * Logic inspired by Sensor Tower and Mobile Action estimations.
  */
 
-export interface AppIntelligence {
+export interface AppGapAnalysis {
     downloadsMonthly: number;
     revenueMonthly: number;
     momentumScore: number;
@@ -14,10 +14,6 @@ export interface AppIntelligence {
 
 /**
  * Estimate monthly downloads and revenue based on rating count, rating, and era.
- * 
- * Logic:
- * - Downloads are roughly RatingCount * Multiplier (Multiplier ranges from 30x to 100x depending on niche).
- * - Revenue is estimated based on Category Spend Profiles + Pricing Model.
  */
 export function estimateAppGrowth(
     ratingCount: number,
@@ -25,7 +21,7 @@ export function estimateAppGrowth(
     category: string,
     pricingModel: string,
     releaseDate: string | null
-): AppIntelligence {
+): AppGapAnalysis {
     const now = new Date();
     const launch = releaseDate ? new Date(releaseDate) : new Date();
     const ageInDays = Math.max(1, (now.getTime() - launch.getTime()) / (1000 * 60 * 60 * 24));

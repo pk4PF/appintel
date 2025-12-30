@@ -245,7 +245,7 @@ export default async function AppDetailPage({ params }: { params: Promise<{ id: 
             </div>
           </div>
 
-          {/* Intelligence Metrics */}
+          {/* Gap Analysis Metrics */}
           <div className="flex flex-wrap justify-center md:justify-start gap-6">
             <MetricCard
               label="Monthly Downloads"

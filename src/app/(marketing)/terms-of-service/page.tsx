@@ -33,7 +33,7 @@ export default function TermsOfServicePage() {
                     <section>
                         <h2 className="text-xl font-semibold mb-4 text-white">2. Description of Service</h2>
                         <p className="text-[#a1a1a1] leading-relaxed">
-                            App Gap provides iOS App Store market intelligence and analysis tools to help
+                            App Gap provides iOS App Store market gap analysis and analysis tools to help
                             developers identify opportunities. Our data is derived from publicly available
                             App Store information and should be used as directional guidance, not absolute metrics.
                         </p>
