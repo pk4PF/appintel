@@ -2,15 +2,13 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { createBrowserClient } from '@supabase/ssr';
 
-export default function LoginPage() {
+export default function ForgotPasswordPage() {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const router = useRouter();
 
     const supabase = createBrowserClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -20,19 +18,18 @@ export default function LoginPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        setMessage('');
         setLoading(true);
 
         try {
-            const { error } = await supabase.auth.signInWithPassword({
-                email,
-                password,
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: `${window.location.origin}/reset-password`,
             });
 
             if (error) {
                 setError(error.message);
             } else {
-                router.push('/dashboard');
-                router.refresh();
+                setMessage('Check your email for the password reset link.');
             }
         } catch {
             setError('An error occurred. Please try again.');
@@ -47,7 +44,7 @@ export default function LoginPage() {
                 {/* Logo */}
                 <div className="text-center mb-8">
                     <Link href="/" className="text-2xl font-bold">App Intel</Link>
-                    <p className="text-[#a1a1a1] mt-2">Welcome back</p>
+                    <p className="text-[#a1a1a1] mt-2">Reset your password</p>
                 </div>
 
                 {/* Form */}
@@ -57,9 +54,9 @@ export default function LoginPage() {
                             {error}
                         </div>
                     )}
-                    {typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('message') && (
+                    {message && (
                         <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-lg text-sm text-green-500">
-                            {new URLSearchParams(window.location.search).get('message')}
+                            {message}
                         </div>
                     )}
 
@@ -78,41 +75,21 @@ export default function LoginPage() {
                         />
                     </div>
 
-                    <div>
-                        <div className="flex justify-between mb-2">
-                            <label htmlFor="password" className="block text-sm text-[#86868b]">
-                                Password
-                            </label>
-                            <Link href="/forgot-password" className="text-sm text-[#8b5cf6] hover:underline">
-                                Forgot password?
-                            </Link>
-                        </div>
-                        <input
-                            id="password"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            className="w-full px-4 py-3 bg-[#242424] border border-white/10 rounded-xl text-white placeholder-[#6b6b6b] focus:outline-none focus:border-[#8b5cf6] transition-colors"
-                            placeholder="••••••••"
-                        />
-                    </div>
-
                     <button
                         type="submit"
                         disabled={loading}
                         className="w-full py-3 bg-[#8b5cf6] hover:bg-[#a78bfa] disabled:opacity-50 text-white font-semibold rounded-xl transition-colors"
                     >
-                        {loading ? 'Signing in...' : 'Sign In'}
+                        {loading ? 'Sending link...' : 'Send Reset Link'}
                     </button>
                 </form>
 
                 {/* Links */}
                 <div className="mt-6 text-center text-sm">
                     <p className="text-[#a1a1a1]">
-                        Don&apos;t have an account?{' '}
-                        <Link href="/signup" className="text-[#8b5cf6] hover:underline">
-                            Sign up
+                        Remembered your password?{' '}
+                        <Link href="/login" className="text-[#8b5cf6] hover:underline">
+                            Sign in
                         </Link>
                     </p>
                 </div>
