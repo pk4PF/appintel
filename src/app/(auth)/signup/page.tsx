@@ -49,7 +49,7 @@ export default function SignUpPage() {
             <div className="w-full max-w-sm">
                 {/* Logo */}
                 <div className="text-center mb-8">
-                    <Link href="/" className="text-2xl font-bold">App Gap</Link>
+                    <Link href="/" className="text-2xl font-bold">App Intel</Link>
                     <p className="text-[#a1a1a1] mt-2">Create your account</p>
                 </div>
 

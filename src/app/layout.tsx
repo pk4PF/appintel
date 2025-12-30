@@ -11,8 +11,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "App Gap | Finding iOS Market Gaps",
-    template: "%s | App Gap"
+    default: "App Intel | Finding iOS Market Gaps",
+    template: "%s | App Intel"
   },
   description: "Find high-potential opportunities in the iOS App Store. Track emerging trends and user pain points to build your next successful indie app.",
 };

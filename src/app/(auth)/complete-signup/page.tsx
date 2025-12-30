@@ -147,7 +147,7 @@ export default function CompleteSignupPage() {
                         </svg>
                     </div>
                     <h1 className="text-2xl font-bold mb-2">Payment Successful!</h1>
-                    <p className="text-[#a1a1a1]">Create your password to access App Gap</p>
+                    <p className="text-[#a1a1a1]">Create your password to access App Intel</p>
                 </div>
 
                 {/* Form */}

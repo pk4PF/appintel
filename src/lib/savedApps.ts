@@ -23,7 +23,7 @@ export interface SavedApp {
   history: AppSnapshot[];
 }
 
-const STORAGE_KEY = 'app-gap-saved-apps';
+const STORAGE_KEY = 'app-intel-saved-apps';
 
 /**
  * Get all saved apps from localStorage

@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Terms of Service',
-    description: 'App Gap Terms of Service - Rules and conditions for using our service.',
+    description: 'App Intel Terms of Service - Rules and conditions for using our service.',
 };
 
 export default function TermsOfServicePage() {
@@ -12,7 +12,7 @@ export default function TermsOfServicePage() {
             {/* Header */}
             <header className="border-b border-white/10">
                 <div className="max-w-3xl mx-auto px-6 py-4">
-                    <Link href="/" className="text-xl font-bold">App Gap</Link>
+                    <Link href="/" className="text-xl font-bold">App Intel</Link>
                 </div>
             </header>
 
@@ -25,7 +25,7 @@ export default function TermsOfServicePage() {
                     <section>
                         <h2 className="text-xl font-semibold mb-4 text-white">1. Acceptance of Terms</h2>
                         <p className="text-[#a1a1a1] leading-relaxed">
-                            By accessing or using App Gap, you agree to be bound by these Terms of Service.
+                            By accessing or using App Intel, you agree to be bound by these Terms of Service.
                             If you do not agree to these terms, please do not use our service.
                         </p>
                     </section>
@@ -33,7 +33,7 @@ export default function TermsOfServicePage() {
                     <section>
                         <h2 className="text-xl font-semibold mb-4 text-white">2. Description of Service</h2>
                         <p className="text-[#a1a1a1] leading-relaxed">
-                            App Gap provides iOS App Store market gap analysis and analysis tools to help
+                            App Intel provides iOS App Store market gap analysis and analysis tools to help
                             developers identify opportunities. Our data is derived from publicly available
                             App Store information and should be used as directional guidance, not absolute metrics.
                         </p>
@@ -75,7 +75,7 @@ export default function TermsOfServicePage() {
                     <section>
                         <h2 className="text-xl font-semibold mb-4 text-white">6. Data Accuracy Disclaimer</h2>
                         <p className="text-[#a1a1a1] leading-relaxed">
-                            App Store data provided through App Gap is estimated and directional. We do not
+                            App Store data provided through App Intel is estimated and directional. We do not
                             guarantee the accuracy of download counts, revenue figures, or other metrics.
                             Use this information as one input among many when making business decisions.
                         </p>
@@ -84,7 +84,7 @@ export default function TermsOfServicePage() {
                     <section>
                         <h2 className="text-xl font-semibold mb-4 text-white">7. Limitation of Liability</h2>
                         <p className="text-[#a1a1a1] leading-relaxed">
-                            App Gap is provided &quot;as is&quot; without warranties of any kind. We are not liable
+                            App Intel is provided &quot;as is&quot; without warranties of any kind. We are not liable
                             for any damages arising from your use of the service or decisions made based
                             on information provided by the service.
                         </p>
@@ -102,7 +102,7 @@ export default function TermsOfServicePage() {
                         <h2 className="text-xl font-semibold mb-4 text-white">9. Contact</h2>
                         <p className="text-[#a1a1a1] leading-relaxed">
                             For questions about these Terms, contact us at:
-                            <span className="text-[#8b5cf6]"> support@appgap.io</span>
+                            <span className="text-[#8b5cf6]"> support@appintel.io</span>
                         </p>
                     </section>
                 </div>

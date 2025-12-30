@@ -49,7 +49,7 @@ export default function Sidebar() {
             <span className="text-xl">🚀</span>
           </div>
           <div>
-            <h1 className="text-lg font-black text-white tracking-tighter leading-tight">App Gap</h1>
+            <h1 className="text-lg font-black text-white tracking-tighter leading-tight">App Intel</h1>
           </div>
         </Link>
       </div>

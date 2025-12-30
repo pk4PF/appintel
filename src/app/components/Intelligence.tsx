@@ -30,7 +30,7 @@ export default function GapAnalysisDisplay({ analysis }: { analysis: GapAnalysis
   if (analysis.totalReviews === 0) {
     return (
       <div className="bg-[#1d1d1f] rounded-2xl p-6">
-        <h2 className="text-xl font-semibold mb-4">🎯 Gap Analysis</h2>
+        <h2 className="text-xl font-semibold mb-4">🎯 App Intelligence</h2>
         <p className="text-[#86868b]">No reviews available for analysis.</p>
       </div>
     );
@@ -40,10 +40,10 @@ export default function GapAnalysisDisplay({ analysis }: { analysis: GapAnalysis
     <div className="bg-[#1d1d1f] rounded-2xl p-6">
       {/* Header with Gap Score */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold">🎯 Gap Analysis</h2>
+        <h2 className="text-xl font-semibold">🎯 App Intelligence</h2>
         <div className="flex items-center gap-3">
           <div className="text-right">
-            <p className="text-xs text-[#86868b]">Gap Score</p>
+            <p className="text-xs text-[#86868b]">Intel Score</p>
             <p className="text-2xl font-bold text-white">{analysis.gapScore}</p>
           </div>
           <div className={`px-3 py-1 rounded-full text-xs font-semibold ${analysis.improvementPotential === 'high'
@@ -136,7 +136,7 @@ export default function GapAnalysisDisplay({ analysis }: { analysis: GapAnalysis
       {analysis.gapSignals.length > 0 && (
         <div>
           <h3 className="text-sm font-semibold text-white mb-3 uppercase tracking-wide">
-            🎯 Gap Signals Found
+            🎯 Intelligence Signals Found
           </h3>
           <div className="grid grid-cols-2 gap-2">
             {analysis.gapSignals.slice(0, 10).map((signal, idx) => (

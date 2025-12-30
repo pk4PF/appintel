@@ -43,7 +43,7 @@ export default function LandingPage() {
             {/* Navigation */}
             <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/10">
                 <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-                    <span className="text-xl font-black tracking-tighter">AppGap</span>
+                    <span className="text-xl font-black tracking-tighter">App Intel</span>
                     <div className="flex items-center gap-4">
                         <Link href="/login" className="text-sm text-[#86868b] hover:text-white transition-colors">
                             Sign In
@@ -194,7 +194,7 @@ export default function LandingPage() {
             {/* Footer */}
             <footer className="py-8 px-6 border-t border-white/10">
                 <div className="max-w-5xl mx-auto flex items-center justify-between text-sm text-[#6e6e73]">
-                    <span>© 2025 AppGap</span>
+                    <span>© 2025 App Intel</span>
                     <div className="flex gap-6">
                         <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy</Link>
                         <Link href="/terms-of-service" className="hover:text-white transition-colors">Terms</Link>

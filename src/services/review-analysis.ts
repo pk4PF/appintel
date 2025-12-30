@@ -3,7 +3,7 @@ import type { ReviewInsightInsert } from '../types/database';
 import { generateSpinoffsWithAI, AISpinoffIdea } from './ai-analysis';
 
 /**
- * THE SPINOFF GOLDMINE ENGINE - APPGAP EDITION
+ * THE SPINOFF GOLDMINE ENGINE - APPINTEL EDITION
  * 
  * All spinoff ideas are iOS App Store apps, NOT B2B SaaS or web products.
  * Target audience: Solo developers looking to build App Store apps.

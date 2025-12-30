@@ -100,7 +100,7 @@ export default function DashboardList({ apps }: DashboardListProps) {
                         <span className={app.opportunity_score > 80 ? 'text-[#34c759] font-black text-xl' : 'text-[#86868b] font-bold text-xl'}>
                             {Math.round(app.opportunity_score)}
                         </span>
-                        <span className="text-[10px] text-[#6e6e73] uppercase tracking-wider font-medium">Gap Score</span>
+                        <span className="text-[10px] text-[#6e6e73] uppercase tracking-wider font-medium">Intel Score</span>
                     </div>
                 </div>
 
@@ -129,7 +129,7 @@ export default function DashboardList({ apps }: DashboardListProps) {
                             <span className="text-xs text-[#86868b] truncate">{app.category}</span>
                         </div>
 
-                        {/* Gap Analysis Indicators */}
+                        {/* Intelligence Indicators */}
                         <div className="flex items-center gap-3 mt-1 pt-3 border-t border-white/[0.03] w-full">
                             <div className="flex flex-col">
                                 <span className="text-[10px] text-[#6e6e73] uppercase tracking-tighter">MONTHLY DOWNLOADS</span>
@@ -155,7 +155,7 @@ export default function DashboardList({ apps }: DashboardListProps) {
             {/* Headers */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 sticky top-0 bg-[#171717] z-20 py-4 border-b border-white/5 backdrop-blur-xl bg-[#171717]/80">
                 <div className="flex items-center gap-2">
-                    <span className="text-xl font-bold text-white">Active Market Gaps</span>
+                    <span className="text-xl font-bold text-white">Active Market Signals</span>
                 </div>
 
                 <div className="flex items-center gap-4">
@@ -179,7 +179,7 @@ export default function DashboardList({ apps }: DashboardListProps) {
                     </div>
 
                     <div className="hidden sm:block text-sm text-[#6e6e73] font-medium border-l border-white/10 pl-4">
-                        Sorted by Gap Score
+                        Sorted by Intel Score
                     </div>
                 </div>
             </div>

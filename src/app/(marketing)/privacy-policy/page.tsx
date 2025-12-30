@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Privacy Policy',
-    description: 'App Gap Privacy Policy - How we collect, use, and protect your data.',
+    description: 'App Intel Privacy Policy - How we collect, use, and protect your data.',
 };
 
 export default function PrivacyPolicyPage() {
@@ -12,7 +12,7 @@ export default function PrivacyPolicyPage() {
             {/* Header */}
             <header className="border-b border-white/10">
                 <div className="max-w-3xl mx-auto px-6 py-4">
-                    <Link href="/" className="text-xl font-bold">App Gap</Link>
+                    <Link href="/" className="text-xl font-bold">App Intel</Link>
                 </div>
             </header>
 
@@ -25,7 +25,7 @@ export default function PrivacyPolicyPage() {
                     <section>
                         <h2 className="text-xl font-semibold mb-4 text-white">1. Information We Collect</h2>
                         <p className="text-[#a1a1a1] leading-relaxed">
-                            When you use App Gap, we collect the following information:
+                            When you use App Intel, we collect the following information:
                         </p>
                         <ul className="list-disc list-inside text-[#a1a1a1] mt-4 space-y-2">
                             <li><strong className="text-white">Account Information:</strong> Email address and password when you create an account.</li>
@@ -80,7 +80,7 @@ export default function PrivacyPolicyPage() {
                         <h2 className="text-xl font-semibold mb-4 text-white">6. Contact Us</h2>
                         <p className="text-[#a1a1a1] leading-relaxed">
                             If you have questions about this Privacy Policy or your data, please contact us at:
-                            <span className="text-[#8b5cf6]"> support@appgap.io</span>
+                            <span className="text-[#8b5cf6]"> support@appintel.io</span>
                         </p>
                     </section>
                 </div>

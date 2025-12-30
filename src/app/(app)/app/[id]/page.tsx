@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   const { data: app } = await supabase.from('apps').select('name').eq('id', id).single();
 
   return {
-    title: app ? `${app.name} | App Gap Analysis` : "Market Gap Analysis",
+    title: app ? `${app.name} | App Intel Analysis` : "App Intelligence Analysis",
     description: `See the revenue data and AI blueprints for ${app?.name || 'this app'}. Find the market gaps and build a better spinoff.`,
   };
 }
@@ -165,7 +165,7 @@ export default async function AppDetailPage({ params }: { params: Promise<{ id: 
           <svg className="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
           </svg>
-          Back to Gaps
+          Back to Intelligence
         </Link>
       </div>
 
@@ -195,7 +195,7 @@ export default async function AppDetailPage({ params }: { params: Promise<{ id: 
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-4">
                 <span className="px-3 py-1 bg-[#8b5cf6]/10 text-[#a78bfa] text-[10px] font-black rounded-full border border-[#8b5cf6]/20 uppercase tracking-widest">
-                  Market Gap Analysis
+                  App Intelligence Analysis
                 </span>
               </div>
               <h1 className="text-5xl font-black tracking-tighter mb-2">{appData.name}</h1>
@@ -245,7 +245,7 @@ export default async function AppDetailPage({ params }: { params: Promise<{ id: 
             </div>
           </div>
 
-          {/* Gap Analysis Metrics */}
+          {/* Intelligence Metrics */}
           <div className="flex flex-wrap justify-center md:justify-start gap-6">
             <MetricCard
               label="Monthly Downloads"

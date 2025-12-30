@@ -8,7 +8,7 @@ export default function VerifyEmailPage() {
             <div className="w-full max-w-sm text-center">
                 {/* Logo */}
                 <div className="mb-8">
-                    <Link href="/" className="text-2xl font-bold">App Gap</Link>
+                    <Link href="/" className="text-2xl font-bold">App Intel</Link>
                 </div>
 
                 {/* Email Icon */}
