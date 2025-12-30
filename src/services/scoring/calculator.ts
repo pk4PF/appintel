@@ -12,9 +12,9 @@ import type { OpportunityScoreInsert } from '@/types/database';
  * but weight signals to find the best opportunities for indie devs.
  */
 const SCORE_WEIGHTS = {
-  reviewGap: 0.40,           // 40% - Pain points (Top signal for spinoffs)
-  marketProof: 0.30,         // 30% - Proven revenue in sweet spot
-  improvement: 0.20,         // 20% - Beatable ratings
+  reviewGap: 0.40,           // 40% - Pain points
+  marketProof: 0.40,         // 40% - Proven revenue (Increased for arbitrage)
+  improvement: 0.10,         // 10% - Beatable ratings
   competition: 0.10,         // 10% - Indie vs Big Tech
 };
 
@@ -293,26 +293,30 @@ export async function calculateOpportunityScore(
     }
   }
 
-  // 3. INDIE ACCESSIBILITY (Max 20 pts)
-  // Is this app reachable for a solo dev or small team?
-  let accessibilityPts = 0;
+  // 3. THE ARBITRAGE SIGNAL (Max 20 pts + Bonus)
+  // High Revenue + Low Rating = Pure Arbitrage Opportunity
+  let arbitragePts = 0;
 
-  // Rating Sweet Spot: People use it but aren't happy (2.5 - 3.8)
-  if (metadata.averageRating >= 2.5 && metadata.averageRating <= 3.8) {
-    accessibilityPts += 10;
-    detailedSignals.push('🎯 Spinoff Sweet Spot: High demand, low satisfaction');
-  }
-
-  // Stale Incumbent: A successful app that hasn't been updated recently is a prime target
-  if (metadata.lastUpdated) {
-    const monthsSinceUpdate = (Date.now() - metadata.lastUpdated.getTime()) / (1000 * 60 * 60 * 24 * 30);
-    if (monthsSinceUpdate > 6 && marketProof.mrr >= 1000) {
-      accessibilityPts += 10;
-      detailedSignals.push('⏳ Stale Incumbent: Not updated in 6+ months');
+  if (marketProof.mrr >= 5000) {
+    if (metadata.averageRating <= 3.5) {
+      arbitragePts += 20;
+      detailedSignals.push('💎 VULNERABLE GIANT: High revenue with critical user dissatisfaction');
+    } else if (metadata.averageRating <= 4.0) {
+      arbitragePts += 10;
+      detailedSignals.push('📈 Market Gap: Strong revenue with major room for improvement');
     }
   }
 
-  score += accessibilityPts;
+  // Stale Incumbent Bonus
+  if (metadata.lastUpdated) {
+    const monthsSinceUpdate = (Date.now() - metadata.lastUpdated.getTime()) / (1000 * 60 * 60 * 24 * 30);
+    if (monthsSinceUpdate > 12 && marketProof.mrr >= 2000) {
+      arbitragePts += 15;
+      detailedSignals.push('🏆 Stale Winner: Successful app abandoned for 12mo+');
+    }
+  }
+
+  score += arbitragePts;
 
   // 4. INDIE DEV FILTERS (Multipliers)
   // We want to actively push down apps that are NOT indie-friendly
@@ -321,14 +325,20 @@ export async function calculateOpportunityScore(
   // Big Tech Penalty: Indie devs shouldn't try a direct spinoff against Google/Meta/etc.
   const bigCo = isBigCompany(metadata.developerName);
   if (bigCo) {
-    multiplier *= 0.5;
-    detailedSignals.push('🛡️ Big Tech: Corporate incumbent (Hard to compete)');
+    multiplier *= 0.2; // HARD penalty
+    detailedSignals.push('🛡️ Big Tech: Corporate incumbent (Extreme barrier to entry)');
   }
 
-  // Blockbuster Penalty: If it has > 100k ratings, it's too established for a simple spinoff
-  if (metadata.ratingCount > 100000) {
+  // Blockbuster Penalty: If it has > 50k ratings, it's too established for a simple spinoff
+  if (metadata.ratingCount > 50000) {
     multiplier *= 0.5;
     detailedSignals.push('🏔️ Blockbuster: App is too established (Too much gravity)');
+  }
+
+  // If it's a MASSIVE app (>250k ratings), it's almost impossible to unseat with a direct spinoff
+  if (metadata.ratingCount > 250000) {
+    multiplier *= 0.2;
+    detailedSignals.push('🌋 Megalith: Virtually unassailable for individual indie spinoffs');
   }
 
   // Final adjusted score

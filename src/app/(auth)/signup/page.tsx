@@ -34,9 +34,8 @@ export default function SignUpPage() {
             if (error) {
                 setError(error.message);
             } else {
-                // Redirect to dashboard (or checkout for paid plans)
-                router.push('/dashboard');
-                router.refresh();
+                // Redirect to verify email page
+                router.push('/verify-email');
             }
         } catch {
             setError('An error occurred. Please try again.');
@@ -46,12 +45,12 @@ export default function SignUpPage() {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white flex items-center justify-center px-6">
+        <div className="min-h-screen bg-[#171717] text-white flex items-center justify-center px-6">
             <div className="w-full max-w-sm">
                 {/* Logo */}
                 <div className="text-center mb-8">
-                    <Link href="/" className="text-2xl font-bold">AppGap</Link>
-                    <p className="text-[#86868b] mt-2">Create your account</p>
+                    <Link href="/" className="text-2xl font-bold">App Gap</Link>
+                    <p className="text-[#a1a1a1] mt-2">Create your account</p>
                 </div>
 
                 {/* Form */}
@@ -72,7 +71,7 @@ export default function SignUpPage() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full px-4 py-3 bg-[#1d1d1f] border border-white/10 rounded-xl text-white placeholder-[#6e6e73] focus:outline-none focus:border-[#007AFF] transition-colors"
+                            className="w-full px-4 py-3 bg-[#242424] border border-white/10 rounded-xl text-white placeholder-[#6b6b6b] focus:outline-none focus:border-[#8b5cf6] transition-colors"
                             placeholder="you@example.com"
                         />
                     </div>
@@ -88,7 +87,7 @@ export default function SignUpPage() {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                             minLength={6}
-                            className="w-full px-4 py-3 bg-[#1d1d1f] border border-white/10 rounded-xl text-white placeholder-[#6e6e73] focus:outline-none focus:border-[#007AFF] transition-colors"
+                            className="w-full px-4 py-3 bg-[#242424] border border-white/10 rounded-xl text-white placeholder-[#6b6b6b] focus:outline-none focus:border-[#8b5cf6] transition-colors"
                             placeholder="••••••••"
                         />
                         <p className="text-xs text-[#6e6e73] mt-1">Minimum 6 characters</p>
@@ -97,7 +96,7 @@ export default function SignUpPage() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-3 bg-[#007AFF] hover:bg-[#0A84FF] disabled:opacity-50 text-white font-semibold rounded-xl transition-colors"
+                        className="w-full py-3 bg-[#8b5cf6] hover:bg-[#a78bfa] disabled:opacity-50 text-white font-semibold rounded-xl transition-colors"
                     >
                         {loading ? 'Creating account...' : 'Create Account'}
                     </button>
@@ -105,14 +104,21 @@ export default function SignUpPage() {
 
                 {/* Terms */}
                 <p className="mt-4 text-xs text-[#6e6e73] text-center">
-                    By signing up, you agree to our Terms of Service and Privacy Policy.
+                    By signing up, you agree to our{' '}
+                    <Link href="/terms-of-service" className="text-[#8b5cf6] hover:underline">
+                        Terms of Service
+                    </Link>{' '}
+                    and{' '}
+                    <Link href="/privacy-policy" className="text-[#8b5cf6] hover:underline">
+                        Privacy Policy
+                    </Link>.
                 </p>
 
                 {/* Links */}
                 <div className="mt-6 text-center text-sm">
-                    <p className="text-[#86868b]">
+                    <p className="text-[#a1a1a1]">
                         Already have an account?{' '}
-                        <Link href="/login" className="text-[#007AFF] hover:underline">
+                        <Link href="/login" className="text-[#8b5cf6] hover:underline">
                             Sign in
                         </Link>
                     </p>

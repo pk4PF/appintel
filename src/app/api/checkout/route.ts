@@ -1,5 +1,3 @@
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
@@ -12,27 +10,16 @@ export async function POST(request: Request) {
         console.error('❌ STRIPE_SECRET_KEY is missing in .env.local');
         return NextResponse.json({ error: 'Stripe is not configured. Please add your secret key.' }, { status: 500 });
     }
+
     try {
-        const cookieStore = await cookies();
-        const supabase = createServerClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-            {
-                cookies: {
-                    getAll() {
-                        return cookieStore.getAll();
-                    },
-                },
-            }
-        );
+        const body = await request.json();
+        const { email } = body;
 
-        const { data: { user } } = await supabase.auth.getUser();
-
-        if (!user) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        if (!email || typeof email !== 'string') {
+            return NextResponse.json({ error: 'Email is required' }, { status: 400 });
         }
 
-        // Create Stripe Checkout Session
+        // Create Stripe Checkout Session (no auth required)
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
@@ -40,34 +27,35 @@ export async function POST(request: Request) {
                     price_data: {
                         currency: 'usd',
                         product_data: {
-                            name: 'AppGap - Lifetime Access',
+                            name: 'App Gap - Lifetime Access',
                             description: 'Unlimited access to app insights and spinoff ideas.',
                         },
-                        unit_amount: 2900, // $29.00
+                        unit_amount: 1900, // $19.00 Lifetime Access
                     },
                     quantity: 1,
                 },
             ],
             mode: 'payment',
-            success_url: `${request.headers.get('origin')}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${request.headers.get('origin')}/upgrade`,
-            customer_email: user.email,
+            success_url: `${request.headers.get('origin')}/complete-signup?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${request.headers.get('origin')}/#pricing`,
+            customer_email: email,
             metadata: {
-                userId: user.id,
+                email: email, // Store email for account creation
             },
         });
 
         return NextResponse.json({ url: session.url });
-    } catch (error: any) {
+    } catch (error: unknown) {
+        const err = error as Error & { type?: string };
         console.error('❌ Error creating checkout session:', {
-            message: error.message,
-            name: error.name,
-            type: error.type,
-            stack: error.stack
+            message: err.message,
+            name: err.name,
+            type: err.type,
+            stack: err.stack
         });
         return NextResponse.json({
             error: 'Internal Server Error',
-            details: error.message
+            details: err.message
         }, { status: 500 });
     }
 }

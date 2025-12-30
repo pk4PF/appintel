@@ -1,15 +1,28 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { createBrowserClient } from '@supabase/ssr';
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.push('/login');
+    router.refresh();
+  };
 
   const navItems = [
     {
       href: '/dashboard',
-      label: 'Dashboard',
+      label: 'Gaps',
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
@@ -17,17 +30,8 @@ export default function Sidebar() {
       )
     },
     {
-      href: '/search',
-      label: 'Search',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-      )
-    },
-    {
       href: '/saved',
-      label: 'Saved Apps',
+      label: 'Saved',
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
@@ -37,38 +41,37 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 bg-black border-r border-white/10 flex flex-col sticky top-0 h-screen shrink-0">
+    <aside className="w-64 bg-[#121212] border-r border-white/5 flex flex-col sticky top-0 h-screen shrink-0">
       {/* Logo */}
-      <div className="p-6 border-b border-white/10">
-        <Link href="/dashboard" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#5856D6] to-[#007AFF] flex items-center justify-center shadow-lg">
+      <div className="p-8">
+        <Link href="/dashboard" className="flex items-center gap-3 group active:scale-95 transition-transform">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#8b5cf6] to-[#7c3aed] flex items-center justify-center shadow-lg shadow-[#8b5cf6]/20 group-hover:scale-110 transition-transform">
             <span className="text-xl">🚀</span>
           </div>
           <div>
-            <h1 className="text-lg font-black text-white tracking-tighter">AppGap</h1>
-            <p className="text-[10px] text-[#86868b] font-bold uppercase tracking-widest">Find App Gaps</p>
+            <h1 className="text-lg font-black text-white tracking-tighter leading-tight">App Gap</h1>
           </div>
         </Link>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4">
-        <ul className="space-y-1">
+      <nav className="flex-1 px-4">
+        <ul className="space-y-2">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${isActive
-                    ? 'bg-white/10 text-white shadow-xl translate-y-[-1px]'
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group active:scale-[0.98] ${isActive
+                    ? 'bg-white/5 text-white border border-white/10 shadow-2xl shadow-black'
                     : 'text-[#86868b] hover:text-white hover:bg-white/5'
                     }`}
                 >
-                  <div className={isActive ? 'text-[#007AFF]' : 'group-hover:text-[#007AFF]'}>
+                  <div className={isActive ? 'text-[#a78bfa]' : 'group-hover:text-[#a78bfa] transition-colors duration-300'}>
                     {item.icon}
                   </div>
-                  <span className="font-medium">{item.label}</span>
+                  <span className="font-bold text-xs uppercase tracking-widest">{item.label}</span>
                 </Link>
               </li>
             );
@@ -76,12 +79,31 @@ export default function Sidebar() {
         </ul>
       </nav>
 
+      {/* Sign Out */}
+      <div className="px-4 pb-2">
+        <button
+          onClick={handleSignOut}
+          className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-[#86868b] hover:text-[#ff453a] hover:bg-[#ff453a]/10 transition-all duration-300 group active:scale-[0.98]"
+        >
+          <div className="group-hover:text-[#ff453a] transition-colors duration-300">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+          </div>
+          <span className="font-bold text-xs uppercase tracking-widest">Sign Out</span>
+        </button>
+      </div>
+
       {/* Footer */}
-      <div className="p-4 border-t border-white/10">
-        <div className="px-4 py-3 rounded-xl bg-[#1d1d1f]">
-          <p className="text-xs text-[#86868b] mb-2">Powered by</p>
-          <p className="text-sm text-white font-medium">iOS App Store Data</p>
-          <p className="text-xs text-[#6e6e73] mt-1">Updated daily</p>
+      <div className="p-6 pt-2">
+        <div className="px-5 py-5 rounded-2xl bg-white/5 border border-white/5 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-20 h-20 bg-[#8b5cf6]/10 blur-2xl pointer-events-none" />
+          <p className="text-[10px] text-[#86868b] font-black uppercase tracking-widest mb-1">Status</p>
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#34c759] animate-pulse" />
+            <p className="text-xs text-white font-bold uppercase tracking-tighter">Live Market Data</p>
+          </div>
+          <p className="text-[9px] text-[#48484a] mt-3 font-bold uppercase tracking-widest">Updated hourly</p>
         </div>
       </div>
     </aside>

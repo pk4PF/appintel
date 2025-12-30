@@ -42,12 +42,12 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white flex items-center justify-center px-6">
+        <div className="min-h-screen bg-[#171717] text-white flex items-center justify-center px-6">
             <div className="w-full max-w-sm">
                 {/* Logo */}
                 <div className="text-center mb-8">
-                    <Link href="/" className="text-2xl font-bold">AppGap</Link>
-                    <p className="text-[#86868b] mt-2">Welcome back</p>
+                    <Link href="/" className="text-2xl font-bold">App Gap</Link>
+                    <p className="text-[#a1a1a1] mt-2">Welcome back</p>
                 </div>
 
                 {/* Form */}
@@ -68,7 +68,7 @@ export default function LoginPage() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full px-4 py-3 bg-[#1d1d1f] border border-white/10 rounded-xl text-white placeholder-[#6e6e73] focus:outline-none focus:border-[#007AFF] transition-colors"
+                            className="w-full px-4 py-3 bg-[#242424] border border-white/10 rounded-xl text-white placeholder-[#6b6b6b] focus:outline-none focus:border-[#8b5cf6] transition-colors"
                             placeholder="you@example.com"
                         />
                     </div>
@@ -83,7 +83,7 @@ export default function LoginPage() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="w-full px-4 py-3 bg-[#1d1d1f] border border-white/10 rounded-xl text-white placeholder-[#6e6e73] focus:outline-none focus:border-[#007AFF] transition-colors"
+                            className="w-full px-4 py-3 bg-[#242424] border border-white/10 rounded-xl text-white placeholder-[#6b6b6b] focus:outline-none focus:border-[#8b5cf6] transition-colors"
                             placeholder="••••••••"
                         />
                     </div>
@@ -91,7 +91,7 @@ export default function LoginPage() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-3 bg-[#007AFF] hover:bg-[#0A84FF] disabled:opacity-50 text-white font-semibold rounded-xl transition-colors"
+                        className="w-full py-3 bg-[#8b5cf6] hover:bg-[#a78bfa] disabled:opacity-50 text-white font-semibold rounded-xl transition-colors"
                     >
                         {loading ? 'Signing in...' : 'Sign In'}
                     </button>
@@ -99,9 +99,9 @@ export default function LoginPage() {
 
                 {/* Links */}
                 <div className="mt-6 text-center text-sm">
-                    <p className="text-[#86868b]">
+                    <p className="text-[#a1a1a1]">
                         Don&apos;t have an account?{' '}
-                        <Link href="/signup" className="text-[#007AFF] hover:underline">
+                        <Link href="/signup" className="text-[#8b5cf6] hover:underline">
                             Sign up
                         </Link>
                     </p>

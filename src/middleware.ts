@@ -43,7 +43,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // Public routes - accessible without auth
-    const publicPaths = ['/', '/login', '/signup', '/auth/callback', '/auth/logout', '/upgrade'];
+    const publicPaths = ['/', '/login', '/signup', '/auth/callback', '/auth/logout', '/upgrade', '/privacy-policy', '/terms-of-service', '/complete-signup'];
     const isPublicPath = publicPaths.some(
         (path) => request.nextUrl.pathname === path || request.nextUrl.pathname.startsWith('/auth/')
     );
@@ -71,6 +71,7 @@ export async function middleware(request: NextRequest) {
 
     // If authenticated and trying to access root, login, or signup, redirect to dashboard
     if (user && (request.nextUrl.pathname === '/' || request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/signup')) {
+        console.log('[DEBUG] Middleware (NO $): Redirecting authenticated user to dashboard from:', request.nextUrl.pathname);
         const url = request.nextUrl.clone();
         url.pathname = '/dashboard';
         return NextResponse.redirect(url);

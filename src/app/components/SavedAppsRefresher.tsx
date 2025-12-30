@@ -10,16 +10,15 @@ export default function SavedAppsRefresher() {
     try {
       const response = await fetch(`/api/apps/${appId}`);
       if (!response.ok) return false;
-      
-      const data = await response.json();
-      const app = data.app;
-      
-      if (!app) return false;
-      
+
+      const app = await response.json();
+
+      if (!app || !app.id) return false;
+
       // Get the latest metrics
       const metrics = app.app_metrics?.[0];
       const opportunityScore = app.opportunity_scores?.[0]?.score;
-      
+
       // Add new snapshot
       addSnapshot(appId, {
         rating: metrics?.rating ?? null,
@@ -28,7 +27,7 @@ export default function SavedAppsRefresher() {
         revenueEstimate: metrics?.revenue_estimate ?? null,
         opportunityScore: opportunityScore ?? null,
       });
-      
+
       console.log(`[SavedAppsRefresher] Refreshed app: ${app.name}`);
       return true;
     } catch (error) {
@@ -39,13 +38,13 @@ export default function SavedAppsRefresher() {
 
   const checkAndRefresh = useCallback(async () => {
     const appsToRefresh = getAppsNeedingRefresh();
-    
+
     if (appsToRefresh.length === 0) {
       return;
     }
-    
+
     console.log(`[SavedAppsRefresher] Found ${appsToRefresh.length} apps needing refresh`);
-    
+
     // Refresh apps one at a time with a delay to avoid overwhelming the API
     for (const app of appsToRefresh) {
       await refreshApp(app.id);

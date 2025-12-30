@@ -34,7 +34,7 @@ interface SearchResultApp {
  */
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  
+
   const query = searchParams.get('q');
   const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 50);
   const categorySlug = searchParams.get('category');
@@ -83,7 +83,8 @@ export async function GET(request: NextRequest) {
         pricing_model,
         categories!apps_category_id_fkey (id, name, slug),
         app_metrics (rating, rating_count, downloads_estimate),
-        opportunity_scores (score, time_window)
+        opportunity_scores (score, time_window),
+        reviews!inner (id)
       `)
       .textSearch('name', searchTerms, { type: 'websearch' })
       .limit(limit);
@@ -109,7 +110,8 @@ export async function GET(request: NextRequest) {
         pricing_model,
         categories!apps_category_id_fkey (id, name, slug),
         app_metrics (rating, rating_count, downloads_estimate),
-        opportunity_scores (score, time_window)
+        opportunity_scores (score, time_window),
+        reviews!inner (id)
       `)
       .ilike('name', `%${query}%`)
       .limit(limit);
@@ -129,10 +131,10 @@ export async function GET(request: NextRequest) {
 
     // Transform results
     const results = uniqueResults.slice(0, limit).map((app) => {
-      const metrics = Array.isArray(app.app_metrics) 
-        ? app.app_metrics[0] 
+      const metrics = Array.isArray(app.app_metrics)
+        ? app.app_metrics[0]
         : null;
-      
+
       const scores = Array.isArray(app.opportunity_scores)
         ? app.opportunity_scores.find((s) => s.time_window === '30d') || app.opportunity_scores[0]
         : null;

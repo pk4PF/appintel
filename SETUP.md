@@ -1,4 +1,4 @@
-# Emerging App Intelligence - Setup Guide
+# App Gap - Setup Guide
 
 ## Prerequisites
 

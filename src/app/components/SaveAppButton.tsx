@@ -17,7 +17,6 @@ interface SaveAppButtonProps {
       downloadsEstimate: number | null;
       revenueEstimate: number | null;
     };
-    opportunityScore?: number | null;
     releaseDate?: string | null;
   };
   className?: string;
@@ -47,14 +46,14 @@ export default function SaveAppButton({
     return (
       <button
         onClick={handleToggle}
-        className={`p-2 transition-colors ${saved
-          ? 'text-[#007AFF]'
-          : 'text-[#6e6e73] hover:text-white'
+        className={`p-2 transition-all duration-300 ${saved
+          ? 'text-[#8b5cf6] scale-110'
+          : 'text-[#6e6e73] hover:text-[#8b5cf6]'
           } ${className}`}
-        title={saved ? 'Remove from saved' : 'Save to list'}
+        title={saved ? 'Remove from saved' : 'Save opportunity'}
       >
         <svg
-          className="w-5 h-5"
+          className="w-5 h-5 transition-transform"
           fill={saved ? 'currentColor' : 'none'}
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -73,16 +72,14 @@ export default function SaveAppButton({
   return (
     <button
       onClick={handleToggle}
-      className={`px-6 py-2 text-sm font-medium rounded-full transition-colors ${saved
-        ? 'bg-[#007AFF] hover:bg-[#0A84FF] text-white'
-        : 'bg-[#2d2d2d] hover:bg-[#3d3d3d] text-white'
+      className={`px-6 py-2.5 text-[11px] font-black tracking-[0.2em] rounded-xl transition-all uppercase border ${saved
+        ? 'bg-[#8b5cf6]/10 text-[#8b5cf6] border-[#8b5cf6]/20'
+        : 'bg-white/5 hover:bg-white/10 text-white border-white/10'
         } ${className}`}
     >
       {saved ? (
-        <span className="flex items-center justify-center gap-1.5">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
+        <span className="flex items-center justify-center gap-2">
+          <div className="w-1 h-1 rounded-full bg-[#8b5cf6] animate-pulse" />
           Saved
         </span>
       ) : (

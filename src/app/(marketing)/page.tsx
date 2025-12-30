@@ -1,8 +1,43 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 
 export default function LandingPage() {
+    const [email, setEmail] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+
+    const handleCheckout = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError('');
+
+        if (!email || !email.includes('@')) {
+            setError('Please enter a valid email');
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            const response = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email }),
+            });
+            const data = await response.json();
+
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                setError(data.error || 'Failed to start checkout');
+                setIsLoading(false);
+            }
+        } catch {
+            setError('Something went wrong. Please try again.');
+            setIsLoading(false);
+        }
+    };
+
     return (
         <div className="min-h-screen bg-black text-white">
             {/* Navigation */}
@@ -13,18 +48,18 @@ export default function LandingPage() {
                         <Link href="/login" className="text-sm text-[#86868b] hover:text-white transition-colors">
                             Sign In
                         </Link>
-                        <Link
-                            href="/signup"
+                        <a
+                            href="#pricing"
                             className="px-4 py-2 bg-[#007AFF] hover:bg-[#0A84FF] text-white text-sm font-medium rounded-full transition-colors"
                         >
                             Get Started
-                        </Link>
+                        </a>
                     </div>
                 </div>
             </nav>
 
             {/* Hero - with Dark Horizon Glow pattern */}
-            <section className="pt-32 pb-20 px-6 relative overflow-hidden">
+            <section className="pt-32 pb-0 px-6 relative overflow-hidden">
                 {/* Dark Horizon Glow Background */}
                 <div
                     className="absolute inset-0 z-0"
@@ -45,8 +80,8 @@ export default function LandingPage() {
                     }}
                 />
                 <div className="max-w-4xl mx-auto text-center relative z-10">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#34c759]/10 border border-[#34c759]/20 rounded-full mb-8">
-                        <span className="text-sm text-[#34c759]">🍎 Find iOS apps making real money</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#5856d6]/10 border border-[#5856d6]/20 rounded-full mb-8">
+                        <span className="text-sm text-[#5856d6]">🍎 Find iOS apps making real money</span>
                     </div>
 
                     <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6">
@@ -57,97 +92,30 @@ export default function LandingPage() {
                     </h1>
 
                     <p className="text-xl text-[#86868b] max-w-2xl mx-auto mb-10 font-medium leading-relaxed">
-                        Find profitable app gaps in the App Store and get a full blueprint to build your next spinoff.
-                        Tech stacks, builder prompts, and marketing playbooks—included.
+                        Identify high-potential gaps in the iOS App Store. Analyze early momentum, revenue estimates, and opportunity scores to find your next profitable niche.
                     </p>
 
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <Link
-                            href="/signup"
-                            className="px-8 py-4 bg-[#34c759] hover:bg-[#30d158] text-black text-lg font-bold rounded-full transition-all hover:scale-105"
-                        >
-                            Get Lifetime Access - $29 →
-                        </Link>
-                        <p className="text-sm text-[#6e6e73]">One-time payment. No subscriptions.</p>
-                    </div>
+
                 </div>
             </section>
 
-            {/* Stats */}
-            <section className="py-16 border-y border-white/10">
-                <div className="max-w-5xl mx-auto px-6">
-                    <div className="grid grid-cols-3 gap-8">
-                        <div className="text-center">
-                            <p className="text-4xl font-bold text-[#34c759]">$$$</p>
-                            <p className="text-sm text-[#86868b] mt-1">Revenue Data</p>
-                        </div>
-                        <div className="text-center">
-                            <p className="text-4xl font-bold text-[#007AFF]">💡</p>
-                            <p className="text-sm text-[#86868b] mt-1">Spinoff Ideas</p>
-                        </div>
-                        <div className="text-center">
-                            <p className="text-4xl font-bold text-[#ff9f0a]">📊</p>
-                            <p className="text-sm text-[#86868b] mt-1">Review Insights</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
-            {/* Features */}
-            <section className="py-20 px-6">
-                <div className="max-w-5xl mx-auto">
-                    <h2 className="text-3xl font-bold text-center mb-16">Everything You Need</h2>
-
-                    <div className="grid md:grid-cols-3 gap-8">
-                        <div className="p-6 bg-[#1d1d1f] rounded-2xl border border-white/5">
-                            <div className="w-12 h-12 bg-[#007AFF]/20 rounded-xl flex items-center justify-center text-2xl mb-4">
-                                📊
-                            </div>
-                            <h3 className="text-lg font-semibold mb-2">Revenue Estimates</h3>
-                            <p className="text-sm text-[#86868b]">
-                                See estimated monthly revenue for any app. Know what&apos;s actually making money.
-                            </p>
-                        </div>
-
-                        <div className="p-6 bg-[#1d1d1f] rounded-2xl border border-white/5">
-                            <div className="w-12 h-12 bg-[#34c759]/20 rounded-xl flex items-center justify-center text-2xl mb-4">
-                                💡
-                            </div>
-                            <h3 className="text-lg font-semibold mb-2">Spinoff Ideas</h3>
-                            <p className="text-sm text-[#86868b]">
-                                AI-generated app ideas based on real user complaints and market gaps.
-                            </p>
-                        </div>
-
-                        <div className="p-6 bg-[#1d1d1f] rounded-2xl border border-white/5">
-                            <div className="w-12 h-12 bg-[#ff9f0a]/20 rounded-xl flex items-center justify-center text-2xl mb-4">
-                                🔍
-                            </div>
-                            <h3 className="text-lg font-semibold mb-2">Deep Analysis</h3>
-                            <p className="text-sm text-[#86868b]">
-                                Read real reviews, find pain points, and discover what users actually want.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             {/* Pricing */}
-            <section className="py-24 px-6 bg-gradient-to-b from-black to-[#0a0a0a]">
+            <section id="pricing" className="pt-12 pb-24 px-6 bg-gradient-to-b from-black to-[#0a0a0a]">
                 <div className="max-w-4xl mx-auto text-center">
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#ff9f0a]/10 border border-[#ff9f0a]/20 rounded-full mb-5">
-                        <span className="text-xs font-medium text-[#ff9f0a]">🔥 Limited Launch Offer</span>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#5856d6]/10 border border-[#5856d6]/20 rounded-full mb-5">
+                        <span className="text-xs font-medium text-[#5856d6]">🔥 Limited Launch Offer</span>
                     </div>
                     <h2 className="text-4xl font-bold mb-3 tracking-tight">Lifetime Access</h2>
                     <p className="text-[#86868b] text-lg">One payment. Forever yours.</p>
 
-                    <div className="max-w-[340px] mx-auto mt-10 p-[1px] rounded-[28px] bg-gradient-to-b from-[#34c759]/40 to-[#34c759]/10">
+                    <div className="max-w-[340px] mx-auto mt-10 p-[1px] rounded-[28px] bg-gradient-to-b from-[#5856d6]/40 to-[#5856d6]/10">
                         <div className="p-7 bg-[#111] rounded-[27px]">
                             {/* Price */}
                             <div className="text-center mb-6">
-                                <span className="text-sm text-[#48484a] line-through block mb-1">$149</span>
                                 <div className="flex items-baseline justify-center gap-1">
-                                    <span className="text-[52px] font-bold text-[#34c759] tracking-tight">$29</span>
+                                    <span className="text-[52px] font-bold text-[#5856d6] tracking-tight">$19</span>
                                     <span className="text-[#6e6e73] text-sm">USD</span>
                                 </div>
                             </div>
@@ -156,70 +124,84 @@ export default function LandingPage() {
                             <div className="h-px bg-white/5 mb-5" />
 
                             {/* Features */}
-                            <ul className="space-y-2.5 mb-6">
-                                <li className="flex items-center gap-2.5 text-[13px] text-white/90">
-                                    <span className="text-[#34c759] text-xs">✓</span>
-                                    <span><strong>Lifetime access</strong> — no recurring fees</span>
+                            <ul className="space-y-3 mb-5 text-left">
+                                <li className="flex items-start gap-3 text-[14px] text-white/90">
+                                    <span className="text-[#5856d6] text-sm shrink-0 mt-0.5">✓</span>
+                                    <span className="leading-snug"><strong>Full Database Access</strong> - Search thousands of iOS apps</span>
                                 </li>
-                                <li className="flex items-center gap-2.5 text-[13px] text-white/90">
-                                    <span className="text-[#34c759] text-xs">✓</span>
-                                    <span><strong>All future updates</strong> included</span>
+                                <li className="flex items-start gap-3 text-[14px] text-white/90">
+                                    <span className="text-[#5856d6] text-sm shrink-0 mt-0.5">✓</span>
+                                    <span className="leading-snug"><strong>Revenue & Downloads</strong> - See monthly earnings and downloads</span>
                                 </li>
-                                <li className="flex items-center gap-2.5 text-[13px] text-white/70">
-                                    <span className="text-[#34c759] text-xs">✓</span>
-                                    Real revenue & download estimates
-                                </li>
-                                <li className="flex items-center gap-2.5 text-[13px] text-white/70">
-                                    <span className="text-[#34c759] text-xs">✓</span>
-                                    AI-powered spinoff ideas
-                                </li>
-                                <li className="flex items-center gap-2.5 text-[13px] text-white/70">
-                                    <span className="text-[#34c759] text-xs">✓</span>
-                                    Review sentiment analysis
+                                <li className="flex items-start gap-3 text-[14px] text-white/80">
+                                    <span className="text-[#5856d6] text-sm shrink-0 mt-0.5">✓</span>
+                                    <span className="leading-snug"><strong>Lifetime License</strong> - Pay once, own forever</span>
                                 </li>
                             </ul>
 
-                            {/* CTA */}
-                            <Link
-                                href="/signup"
-                                className="block w-full py-3.5 bg-[#34c759] hover:bg-[#30d158] text-black font-semibold rounded-xl transition-all text-[15px] shadow-lg shadow-[#34c759]/20"
-                            >
-                                Get Lifetime Access →
-                            </Link>
+                            {/* Coming Soon */}
+                            <div className="mb-6">
+                                <p className="text-[10px] uppercase tracking-widest text-[#6e6e73] mb-3 font-bold">🚀 Coming Soon</p>
+                                <div className="space-y-3">
+                                    <div>
+                                        <p className="text-[13px] font-semibold text-white/70">AI Review Analysis</p>
+                                        <p className="text-[11px] text-white/35">Turn reviewer complaints into new app opportunities.</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-[13px] font-semibold text-white/70">Search Demand</p>
+                                        <p className="text-[11px] text-white/35">See what apps people are looking for but can&apos;t find.</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-[13px] font-semibold text-white/70">Country Trends</p>
+                                        <p className="text-[11px] text-white/35">Discover top apps from other countries to build in your desired country.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Email + CTA Form */}
+                            <form onSubmit={handleCheckout} className="space-y-3">
+                                {error && (
+                                    <p className="text-xs text-[#ff453a] text-center">{error}</p>
+                                )}
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="Enter your email"
+                                    required
+                                    className="w-full px-4 py-3 bg-[#1a1a1a] border border-white/10 rounded-xl text-white placeholder-[#6e6e73] focus:outline-none focus:border-[#5856d6] transition-colors text-[14px]"
+                                />
+                                <button
+                                    type="submit"
+                                    disabled={isLoading}
+                                    className="block w-full py-3.5 bg-[#5856d6] hover:bg-[#6967e0] disabled:opacity-50 text-white font-semibold rounded-xl transition-all text-[15px] shadow-lg shadow-[#5856d6]/20"
+                                >
+                                    {isLoading ? 'Redirecting to checkout...' : 'Get Lifetime Access →'}
+                                </button>
+                            </form>
 
                             {/* Urgency */}
-                            <p className="text-[11px] text-[#ff9f0a] mt-4 font-medium">
-                                ⚠️ Switching to monthly subscription soon — lock in lifetime now
-                            </p>
+                            <div className="mt-4 text-center text-[10px] font-black text-[#ff9500] uppercase tracking-widest bg-[#ff9500]/5 py-2 px-3 rounded-xl border border-[#ff9500]/10">
+                                Early Access Only – Switching to $29/mo soon
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* CTA */}
-            <section className="py-20 px-6">
-                <div className="max-w-3xl mx-auto text-center">
-                    <h2 className="text-3xl font-bold mb-4">Ready to find your next app idea?</h2>
-                    <p className="text-[#86868b] mb-8">Join indie developers building profitable apps.</p>
-                    <Link
-                        href="/signup"
-                        className="inline-block px-8 py-4 bg-[#34c759] hover:bg-[#30d158] text-black text-lg font-bold rounded-full transition-all hover:scale-105"
-                    >
-                        Get Lifetime Access - $29 →
-                    </Link>
-                </div>
-            </section>
+
 
             {/* Footer */}
             <footer className="py-8 px-6 border-t border-white/10">
                 <div className="max-w-5xl mx-auto flex items-center justify-between text-sm text-[#6e6e73]">
                     <span>© 2025 AppGap</span>
                     <div className="flex gap-6">
-                        <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
-                        <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+                        <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy</Link>
+                        <Link href="/terms-of-service" className="hover:text-white transition-colors">Terms</Link>
                     </div>
                 </div>
             </footer>
         </div>
     );
 }
+

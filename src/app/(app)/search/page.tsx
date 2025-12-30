@@ -93,29 +93,29 @@ function SearchContent() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[#171717] text-white">
       {/* Header */}
-      <div className="px-8 py-6">
-        <h1 className="text-3xl font-bold mb-6">Search Apps</h1>
+      <div className="px-8 py-10 border-b border-white/5">
+        <h1 className="text-4xl font-black mb-8 tracking-tight">Search Apps</h1>
 
         {/* Search Form */}
-        <form onSubmit={handleSearch} className="max-w-2xl">
-          <div className="relative">
-            <svg className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-[#6e6e73]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <form onSubmit={handleSearch} className="max-w-3xl">
+          <div className="relative group">
+            <svg className="w-5 h-5 absolute left-5 top-1/2 -translate-y-1/2 text-[#6e6e73] group-focus-within:text-[#8b5cf6] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search for apps..."
-              className="w-full pl-12 pr-4 py-4 bg-[#1d1d1f] border border-white/10 rounded-xl text-white placeholder-[#6e6e73] focus:outline-none focus:border-[#007AFF] transition-colors"
+              placeholder="Enter keywords, categories, or app names..."
+              className="w-full pl-14 pr-12 py-5 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-[#6e6e73] focus:outline-none focus:border-[#8b5cf6] focus:bg-white/[0.07] transition-all shadow-2xl shadow-black/20"
             />
             {query && (
               <button
                 type="button"
                 onClick={() => { setQuery(''); setResults([]); setHasSearched(false); }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6e6e73] hover:text-white"
+                className="absolute right-5 top-1/2 -translate-y-1/2 text-[#6e6e73] hover:text-white transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -126,12 +126,13 @@ function SearchContent() {
         </form>
 
         {/* Quick Search Tags */}
-        <div className="flex flex-wrap gap-2 mt-4">
+        <div className="flex flex-wrap gap-2 mt-6">
+          <span className="text-[10px] font-black text-[#48484a] uppercase tracking-widest mr-2 py-2">Quick Tags:</span>
           {QUICK_SEARCHES.map((term) => (
             <button
               key={term}
               onClick={() => { setQuery(term); performSearch(term); }}
-              className="px-4 py-2 bg-[#1d1d1f] hover:bg-[#2d2d2d] text-sm text-[#86868b] hover:text-white rounded-full transition-colors capitalize"
+              className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/5 text-[10px] font-black text-[#86868b] hover:text-white rounded-xl transition-all capitalize tracking-widest"
             >
               {term}
             </button>
@@ -142,8 +143,9 @@ function SearchContent() {
       {/* Results */}
       <div className="px-8 py-6">
         {isLoading ? (
-          <div className="flex items-center justify-center py-20">
-            <div className="w-8 h-8 border-2 border-[#007AFF] border-t-transparent rounded-full animate-spin"></div>
+          <div className="flex flex-col items-center justify-center py-32 gap-6">
+            <div className="w-12 h-12 border-4 border-[#8b5cf6]/20 border-t-[#8b5cf6] rounded-full animate-spin"></div>
+            <p className="text-[10px] font-black text-[#8b5cf6] uppercase tracking-[0.2em]">Searching Database...</p>
           </div>
         ) : results.length > 0 ? (
           <>
@@ -187,9 +189,9 @@ function SearchContent() {
                   {/* View Button */}
                   <Link
                     href={`/app/${app.id}`}
-                    className="px-5 py-1.5 bg-[#007AFF] hover:bg-[#0A84FF] text-white text-sm font-medium rounded-full transition-colors whitespace-nowrap"
+                    className="px-6 py-2.5 bg-[#8b5cf6] hover:bg-[#7c3aed] text-white text-[10px] font-black rounded-xl transition-all shadow-xl shadow-[#8b5cf6]/10 uppercase tracking-widest"
                   >
-                    View
+                    View Details
                   </Link>
                 </div>
               ))}
@@ -214,13 +216,13 @@ function SearchContent() {
 export default function SearchPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-black text-white p-8">
+      <div className="min-h-screen bg-[#171717] text-white p-8">
         <div className="animate-pulse">
-          <div className="h-10 bg-[#1d1d1f] rounded w-48 mb-6"></div>
-          <div className="h-14 bg-[#1d1d1f] rounded w-full max-w-2xl mb-4"></div>
+          <div className="h-12 bg-white/5 rounded-2xl w-48 mb-8"></div>
+          <div className="h-16 bg-white/5 rounded-2xl w-full max-w-3xl mb-8"></div>
           <div className="flex gap-2">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="h-10 bg-[#1d1d1f] rounded-full w-24"></div>
+              <div key={i} className="h-10 bg-white/5 rounded-xl w-24"></div>
             ))}
           </div>
         </div>

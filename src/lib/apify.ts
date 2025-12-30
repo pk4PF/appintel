@@ -180,6 +180,7 @@ export const CATEGORY_URLS = {
   business: 'https://apps.apple.com/us/charts/iphone/business-apps/6000',
   news: 'https://apps.apple.com/us/charts/iphone/news-apps/6009',
   weather: 'https://apps.apple.com/us/charts/iphone/weather-apps/6001',
+  medical: 'https://apps.apple.com/us/charts/iphone/medical-apps/6020',
 } as const;
 
 export type CategorySlug = keyof typeof CATEGORY_URLS;

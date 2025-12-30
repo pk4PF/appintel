@@ -33,49 +33,19 @@ export async function estimateMRR(appId: string): Promise<{
   const totalDownloads = latestMetrics?.downloads_estimate || 0;
   const revenueEstimate = latestMetrics?.revenue_estimate || 0;
 
-  // If we have revenue estimate, use it directly
-  if (revenueEstimate > 0) {
-    return { mrr: revenueEstimate, method: 'estimated' };
-  }
+  // Calculate Formula MRR first
+  const formulaMRR = calculateMRRFromMetrics(
+    app.pricing_model,
+    app.price,
+    totalDownloads,
+    app.release_date,
+    revenueEstimate
+  );
 
-  // Calculate app age in months
-  const releaseDate = app.release_date ? new Date(app.release_date) : new Date();
-  const monthsActive = Math.max(1, Math.floor((Date.now() - releaseDate.getTime()) / (1000 * 60 * 60 * 24 * 30)));
+  // Use the higher of the two (stale estimates in DB shouldn't nerf the value)
+  const finalMRR = Math.max(formulaMRR, revenueEstimate || 0);
 
-  // Monthly downloads roughly = Total / Months Active (capped at 12 for "current" run-rate)
-  // For old apps, we assume they reached a steady state or declined
-  const currentMonthlyDownloads = totalDownloads / Math.max(monthsActive, 12);
-
-  // Category-specific download multiplier (if we were estimating from ratings, but here we have downloads_estimate)
-  // We'll trust downloads_estimate but apply conservative conversion
-
-  // Calculate based on pricing model
-  const pricingModel = app.pricing_model || 'free';
-  const price = app.price || 0;
-
-  if (pricingModel === 'subscription') {
-    // Subscription: 2.5% conversion, average $6/month
-    const avgMonthlyPrice = price > 0 ? price : 5.99;
-    const conversionRate = 0.025;
-    const activeUsers = currentMonthlyDownloads * 1.5; // Assume 1.5x monthly downloads are active/retained
-    const mrr = activeUsers * conversionRate * avgMonthlyPrice;
-    return { mrr: Math.round(mrr), method: 'subscription' };
-  }
-
-  if (pricingModel === 'freemium' || pricingModel === 'paid') {
-    // IAP or Paid: 1.5% conversion
-    const avgPrice = price > 0 ? price : 3.99;
-    const conversionRate = 0.015;
-    const mrr = currentMonthlyDownloads * conversionRate * avgPrice;
-    return { mrr: Math.round(mrr), method: pricingModel === 'freemium' ? 'iap' : 'paid' };
-  }
-
-  // Free apps: estimate from ads
-  const adRevenuePerUser = 0.05; // $0.05 per user per month
-  const activeUsers = currentMonthlyDownloads * 2;
-  const mrr = activeUsers * adRevenuePerUser;
-
-  return { mrr: Math.round(mrr), method: 'estimated' };
+  return { mrr: finalMRR, method: formulaMRR > (revenueEstimate || 0) ? 'subscription' : 'estimated' };
 }
 
 /**
@@ -85,34 +55,59 @@ export function calculateMRRFromMetrics(
   pricingModel: string | null,
   price: number | null,
   downloadsEstimate: number | null,
-  releaseDate?: string | null
+  releaseDate?: string | null,
+  revenueEstimate?: number | null
 ): number {
   const totalDownloads = downloadsEstimate || 0;
-  const model = pricingModel || 'free';
+  if (totalDownloads === 0) return 0;
+
+  const model = pricingModel?.toLowerCase() || 'free';
   const appPrice = price || 0;
 
-  // Estimate current monthly downloads from total
+  // 2. Estimate current monthly downloads from total
   const date = releaseDate ? new Date(releaseDate) : new Date();
   const monthsActive = Math.max(1, Math.floor((Date.now() - date.getTime()) / (1000 * 60 * 60 * 24 * 30)));
-  const currentMonthlyDownloads = totalDownloads / Math.max(monthsActive, 12);
+
+  // For older apps, we assume a decay in monthly downloads
+  const avgMonthlyDownloads = totalDownloads / monthsActive;
+
+  // High-growth apps (lots of downloads in short time) shouldn't decay
+  let currentMonthlyDownloads = avgMonthlyDownloads;
+  if (monthsActive > 12 && totalDownloads < 100000) {
+    // Only decay for smaller, older apps
+    currentMonthlyDownloads = avgMonthlyDownloads * 0.7;
+  }
 
   if (model === 'subscription') {
-    const avgMonthlyPrice = appPrice > 0 ? appPrice : 5.99;
-    const conversionRate = 0.025;
-    const activeUsers = currentMonthlyDownloads * 1.5;
-    return Math.round(activeUsers * conversionRate * avgMonthlyPrice);
+    // High-tier apps (Atoms, meditation, etc.) convert MUCH better
+    // Professional apps have 5-10% conversion from monthly downloads
+    const avgMonthlyPrice = appPrice > 0 ? appPrice : 9.99;
+
+    // Progressive conversion rate based on volume (popular apps convert better)
+    let conversionRate = 0.06; // Base 6%
+    if (totalDownloads > 500000) conversionRate = 0.10; // 10% for massive apps
+    if (totalDownloads > 5000000) conversionRate = 0.18; // 18% for global brands (Atoms, etc)
+
+    // Brand Power: Top apps can charge premium subscriptions
+    const brandMultiplier = totalDownloads > 1000000 ? 1.4 : 1.0;
+
+    const formulaMRR = Math.round(currentMonthlyDownloads * conversionRate * avgMonthlyPrice * brandMultiplier);
+    return Math.max(formulaMRR, revenueEstimate || 0);
   }
 
   if (model === 'freemium' || model === 'paid') {
-    const avgPrice = appPrice > 0 ? appPrice : 3.99;
-    const conversionRate = 0.015;
-    return Math.round(currentMonthlyDownloads * conversionRate * avgPrice);
+    const avgPrice = appPrice > 0 ? appPrice : 7.99;
+    const conversionRate = model === 'paid' ? 1.0 : 0.04;
+    const formulaMRR = Math.round(currentMonthlyDownloads * conversionRate * avgPrice);
+    return Math.max(formulaMRR, revenueEstimate || 0);
   }
 
-  // Free apps
-  const adRevenuePerUser = 0.05;
-  const activeUsers = currentMonthlyDownloads * 2;
-  return Math.round(activeUsers * adRevenuePerUser);
+  // Free apps (Ads revenue)
+  const adRevenuePerDownload = 0.25; // Increased from 0.15 for better realism
+  const baseRevenue = Math.round(currentMonthlyDownloads * adRevenuePerDownload);
+
+  // Use DB estimate as a floor, but prioritize formula
+  return Math.max(baseRevenue, revenueEstimate || 0);
 }
 
 /**
@@ -123,9 +118,3 @@ export function formatMRR(mrr: number): string {
   if (mrr >= 1000) return `$${(mrr / 1000).toFixed(1)}K`;
   return `$${mrr}`;
 }
-
-
-
-
-
-

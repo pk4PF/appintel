@@ -42,6 +42,7 @@ interface ReviewsAnalysisProps {
   insights: ReviewInsight[];
   appName?: string;
   isAuthenticated?: boolean;
+  isPremium?: boolean;
 }
 
 function formatDate(date: string | null): string {
@@ -68,9 +69,20 @@ function StarRating({ rating }: { rating: number }) {
 type TabType = 'all' | 'positive' | 'negative' | 'opportunities';
 type BlueprintTab = 'stack' | 'prompts' | 'marketing';
 
-export default function ReviewsAnalysis({ reviews, insights, appName, isAuthenticated = false }: ReviewsAnalysisProps) {
+export default function ReviewsAnalysis({
+  reviews,
+  insights,
+  appName,
+  isAuthenticated = false,
+  isPremium = false
+}: ReviewsAnalysisProps) {
   const [activeTab, setActiveTab] = useState<TabType>('all');
   const [activeBlueprintTabs, setActiveBlueprintTabs] = useState<Record<string, BlueprintTab>>({});
+
+  // Show blueprints if:
+  // 1. User is premium
+  // OR 2. App is special (maybe we have some free examples? for now let's just stick to isPremium)
+  const canSeeBlueprints = isPremium;
 
   // Categorize reviews
   const positiveReviews = reviews.filter(r => r.rating >= 4);
@@ -122,8 +134,8 @@ export default function ReviewsAnalysis({ reviews, insights, appName, isAuthenti
           </div>
         </div>
 
-        {isAuthenticated ? (
-          // Full insights for authenticated users
+        {canSeeBlueprints ? (
+          // Full insights for premium users
           insights.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {insights.map((insight) => {
@@ -260,10 +272,10 @@ export default function ReviewsAnalysis({ reviews, insights, appName, isAuthenti
                   Get full tech stacks, builder prompts, and marketing plans for every market gap focused on {appName}.
                 </p>
                 <a
-                  href="/signup"
+                  href={isAuthenticated ? "/upgrade" : "/signup"}
                   className="w-full py-4 bg-[#007AFF] text-white font-black rounded-2xl hover:bg-[#0051D4] hover:scale-[1.02] transition-all text-xs uppercase tracking-[0.2em]"
                 >
-                  Start Building Now
+                  {isAuthenticated ? "Unlock Now" : "Start Building Now"}
                 </a>
               </div>
             </div>

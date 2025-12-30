@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Link from "next/link";
 import "./globals.css";
 import SavedAppsRefresher from "./components/SavedAppsRefresher";
+import CookieConsent from "./components/CookieConsent";
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"]
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
-  title: "AppGap",
-  description: "Find high-potential app gaps in the App Store and get a full blueprint to build your next profitable spinoff.",
+  title: {
+    default: "App Gap | Finding iOS Market Gaps",
+    template: "%s | App Gap"
+  },
+  description: "Find high-potential opportunities in the iOS App Store. Track emerging trends and user pain points to build your next successful indie app.",
 };
 
 export default function RootLayout({
@@ -21,9 +24,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased bg-black`} suppressHydrationWarning>
+      <body className={`${inter.className} antialiased`} suppressHydrationWarning>
         {children}
         <SavedAppsRefresher />
+        <CookieConsent />
       </body>
     </html>
   );

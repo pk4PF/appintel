@@ -121,20 +121,24 @@ export async function ingestReviewsForTopApps(
   let appsProcessed = 0;
   let totalReviews = 0;
 
-  for (const app of allApps) {
-    console.log(`\n[${appsProcessed + 1}/${allApps.length}] ${app.name}${app.hasReviews ? ' (updating)' : ' (new)'}`);
+  // Process in batches to speed up
+  const BATCH_SIZE = 10;
 
-    const { success } = await ingestReviewsForApp(
-      app.id,
-      app.app_store_id,
-      reviewsPerApp
-    );
+  for (let i = 0; i < allApps.length; i += BATCH_SIZE) {
+    const batch = allApps.slice(i, i + BATCH_SIZE);
+    console.log(`\nProcessing batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(allApps.length / BATCH_SIZE)} (${batch.length} apps)...`);
 
-    appsProcessed++;
-    totalReviews += success;
+    const results = await Promise.all(batch.map(async (app) => {
+      console.log(`  Fetching reviews for: ${app.name}${app.hasReviews ? ' (updating)' : ' (new)'}`);
+      return ingestReviewsForApp(app.id, app.app_store_id, reviewsPerApp);
+    }));
 
-    // Delay to avoid rate limiting (Apify may have rate limits)
-    await new Promise((r) => setTimeout(r, 2000));
+    const batchSuccess = results.reduce((acc, r) => acc + r.success, 0);
+    appsProcessed += results.length;
+    totalReviews += batchSuccess;
+
+    // Small delay between batches to avoid strict rate limiting
+    await new Promise((r) => setTimeout(r, 1000));
   }
 
   console.log(`\n✅ Processed ${appsProcessed} apps, ${totalReviews} total reviews`);
