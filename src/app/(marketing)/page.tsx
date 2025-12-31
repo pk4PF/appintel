@@ -97,7 +97,7 @@ export default function LandingPage() {
                     </h1>
 
                     <p className="text-xl text-[#86868b] max-w-2xl mx-auto mb-10 font-medium leading-relaxed">
-                        Stop guessing what to build. We analyze thousands of high-revenue apps with terrible ratings so you can launch a better version and dominate.
+                        We analyze thousands of high-revenue apps so you can find validated ideas that are already making money.
                     </p>
 
 
