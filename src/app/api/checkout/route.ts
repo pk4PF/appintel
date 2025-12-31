@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
     try {
         const body = await request.json();
-        const { email } = body;
+        const { email, userId } = body;
 
         if (!email || typeof email !== 'string') {
             return NextResponse.json({ error: 'Email is required' }, { status: 400 });
@@ -40,7 +40,9 @@ export async function POST(request: Request) {
             cancel_url: `${request.headers.get('origin')}/#pricing`,
             customer_email: email,
             metadata: {
-                email: email, // Store email for account creation
+                email: email,
+                userId: userId || '', // Pass through if available
+                app_name: 'App Intel',
             },
         });
 

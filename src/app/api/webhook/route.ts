@@ -24,31 +24,47 @@ export async function POST(request: Request) {
     if (event.type === 'checkout.session.completed') {
         const session = event.data.object as Stripe.Checkout.Session;
         const userId = session.metadata?.userId;
+        const customerEmail = session.customer_details?.email || session.metadata?.email;
+
+        console.log(`(IS $) Webhook received for ${customerEmail || 'unknown customer'}`);
+
+        // Initialize Supabase Admin Client
+        const supabaseAdmin = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.SUPABASE_SERVICE_ROLE_KEY!,
+            {
+                auth: {
+                    autoRefreshToken: false,
+                    persistSession: false,
+                },
+            }
+        );
 
         if (userId) {
-            // Initialize Supabase Admin Client
-            const supabaseAdmin = createClient(
-                process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.SUPABASE_SERVICE_ROLE_KEY!,
-                {
-                    auth: {
-                        autoRefreshToken: false,
-                        persistSession: false,
-                    },
-                }
-            );
-
-            // Update user metadata to set is_premium: true
+            // Option 1: Upgrade existing user via ID
             const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
                 user_metadata: { is_premium: true },
             });
 
             if (error) {
-                console.error('Error updating user premium status:', error);
+                console.error(`❌ Error upgrading user ${userId}:`, error);
                 return NextResponse.json({ error: 'Failed to update user' }, { status: 500 });
             }
+            console.log(`(IS $) ✅ User ${userId} upgraded to premium!`);
+        } else if (customerEmail) {
+            // Option 2: Find user by email and upgrade
+            // This handles cases where they were logged in but metadata didn't pass through
+            const { data: users, error: searchError } = await supabaseAdmin.auth.admin.listUsers();
+            const existingUser = users?.users.find(u => u.email === customerEmail);
 
-            console.log(`✅ User ${userId} upgraded to premium!`);
+            if (existingUser) {
+                await supabaseAdmin.auth.admin.updateUserById(existingUser.id, {
+                    user_metadata: { is_premium: true },
+                });
+                console.log(`(IS $) ✅ Found and upgraded existing user ${existingUser.id} via email ${customerEmail}`);
+            } else {
+                console.log(`(IS $) ℹ️ No user found for ${customerEmail}. Account will be created during signup flow.`);
+            }
         }
     }
 
