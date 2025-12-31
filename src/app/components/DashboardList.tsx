@@ -23,9 +23,10 @@ interface DashboardApp {
 
 interface DashboardListProps {
     apps: DashboardApp[];
+    isPremium: boolean;
 }
 
-export default function DashboardList({ apps }: DashboardListProps) {
+export default function DashboardList({ apps, isPremium }: DashboardListProps) {
     const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
     const ITEMS_PER_PAGE = 48;
@@ -52,10 +53,13 @@ export default function DashboardList({ apps }: DashboardListProps) {
     const totalPages = Math.ceil(filteredAndSortedApps.length / ITEMS_PER_PAGE);
 
     // Get current page apps
-    const currentApps = filteredAndSortedApps.slice(
+    const allCurrentApps = filteredAndSortedApps.slice(
         (currentPage - 1) * ITEMS_PER_PAGE,
         currentPage * ITEMS_PER_PAGE
     );
+
+    // Filter for paywall
+    const currentApps = isPremium ? allCurrentApps : allCurrentApps.slice(0, 3);
 
     const formatNumber = (num: number) => {
         if (!num) return '0';
@@ -201,8 +205,8 @@ export default function DashboardList({ apps }: DashboardListProps) {
                 )}
             </div>
 
-            {/* Pagination */}
-            {totalPages > 1 && (
+            {/* Pagination (Premium Only) */}
+            {isPremium && totalPages > 1 && (
                 <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/5">
                     <button
                         onClick={() => setCurrentPage((p: number) => Math.max(1, p - 1))}
@@ -221,6 +225,29 @@ export default function DashboardList({ apps }: DashboardListProps) {
                     >
                         Next
                     </button>
+                </div>
+            )}
+
+            {/* Paywall Banner for Free Users */}
+            {!isPremium && (
+                <div className="mt-12 p-[1px] rounded-[32px] bg-gradient-to-r from-[#8b5cf6] to-[#6366f1] animate-fade-in">
+                    <div className="bg-[#1c1c1e] p-10 rounded-[31px] text-center">
+                        <h3 className="text-3xl font-black tracking-tighter mb-4 uppercase">
+                            Unlock {formatNumber(apps.length)}+ Market Opportunities
+                        </h3>
+                        <p className="text-[#86868b] font-medium mb-8 max-w-xl mx-auto">
+                            You&apos;re currently viewing a limited preview. Upgrade to Premium to see the full database, revenue estimates, and AI blueprints.
+                        </p>
+                        <Link
+                            href="/#pricing"
+                            className="inline-flex items-center gap-2 px-8 py-4 bg-[#8b5cf6] hover:bg-[#7c3aed] text-white font-black rounded-2xl transition-all shadow-xl shadow-[#8b5cf6]/20 uppercase tracking-widest hover:scale-105"
+                        >
+                            Get Full Lifetime Access
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </Link>
+                    </div>
                 </div>
             )}
         </div>

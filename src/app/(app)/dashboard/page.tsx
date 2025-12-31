@@ -9,8 +9,11 @@ export default async function DashboardPage() {
     const supabase = getServerClient();
     const supabaseAuth = await createClient();
 
-    // Check auth
+    // Check auth and premium status
     const { data: { user } } = await supabaseAuth.auth.getUser();
+    const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '').split(',').map(email => email.trim().toLowerCase());
+    const isAdmin = !!(user && ADMIN_EMAILS.includes(user.email?.toLowerCase() || ''));
+    const isPremium = !!(user?.user_metadata?.is_premium || isAdmin);
 
     const { data: apps, error } = await supabase
         .from('apps')
@@ -89,7 +92,7 @@ export default async function DashboardPage() {
             {/* Content */}
             <div className="px-4 md:px-8 py-10">
                 <div className="max-w-[1600px] mx-auto">
-                    <DashboardList apps={dashboardApps} />
+                    <DashboardList apps={dashboardApps} isPremium={isPremium} />
                 </div>
             </div>
         </div>
