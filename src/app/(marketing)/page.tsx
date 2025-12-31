@@ -85,11 +85,7 @@ export default function LandingPage() {
                     }}
                 />
                 <div className="max-w-4xl mx-auto text-center relative z-10">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#5856d6]/10 border border-[#5856d6]/20 rounded-full mb-8">
-                        <span className="text-sm text-[#5856d6]">🍎 48,648 iOS Apps Analyzed</span>
-                    </div>
-
-                    <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6">
+                    <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 mt-8">
                         Find Your Next
                         <span className="block bg-gradient-to-r from-[#5856d6] to-[#007AFF] bg-clip-text text-transparent">
                             $10k/mo App Idea
