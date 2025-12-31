@@ -34,8 +34,9 @@ export default function SignUpPage() {
             if (error) {
                 setError(error.message);
             } else {
-                // Redirect to verify email page
-                router.push('/verify-email');
+                // Redirect to dashboard (assuming email confirmation is off)
+                router.push('/dashboard');
+                router.refresh();
             }
         } catch {
             setError('An error occurred. Please try again.');

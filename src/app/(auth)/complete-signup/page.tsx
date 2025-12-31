@@ -13,7 +13,6 @@ export default function CompleteSignupPage() {
     const [loading, setLoading] = useState(true);
     const [creating, setCreating] = useState(false);
     const [sessionValid, setSessionValid] = useState(false);
-    const [confirmationSent, setConfirmationSent] = useState(false);
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -94,13 +93,8 @@ export default function CompleteSignupPage() {
             }
 
             if (data.user) {
-                // Check if email confirmation is required (session will be null)
-                if (!data.session) {
-                    setConfirmationSent(true);
-                    return;
-                }
-
-                // Successfully created account and signed in, redirect to dashboard
+                // Successfully created account, redirect to dashboard
+                // Note: We assume 'Confirm Email' is turned OFF in Supabase for instant access
                 router.push('/dashboard');
                 router.refresh();
             }
@@ -117,36 +111,6 @@ export default function CompleteSignupPage() {
                 <div className="text-center">
                     <div className="w-8 h-8 border-2 border-[#8b5cf6] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
                     <p className="text-[#86868b]">Verifying your payment...</p>
-                </div>
-            </div>
-        );
-    }
-
-    if (confirmationSent) {
-        return (
-            <div className="min-h-screen bg-[#171717] text-white flex items-center justify-center px-6">
-                <div className="w-full max-w-sm text-center">
-                    <div className="w-16 h-16 mx-auto bg-[#8b5cf6]/20 rounded-full flex items-center justify-center mb-6">
-                        <svg className="w-8 h-8 text-[#8b5cf6]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <h1 className="text-2xl font-bold mb-2">Check your email</h1>
-                    <p className="text-[#a1a1a1] mb-8">
-                        We've sent a confirmation link to <span className="text-white font-medium">{email}</span>.
-                        Please click the link to activate your premium account.
-                    </p>
-                    <div className="space-y-4">
-                        <p className="text-sm text-[#6e6e73]">
-                            Can't find it? Check your spam folder or try resizing your browser.
-                        </p>
-                        <Link
-                            href="/login"
-                            className="inline-block text-[#8b5cf6] hover:text-[#a78bfa] text-sm font-medium"
-                        >
-                            Back to Sign In
-                        </Link>
-                    </div>
                 </div>
             </div>
         );
