@@ -29,6 +29,8 @@ export const DEFAULT_PREFS: CookiePrefs = {
     analytics: false,
 };
 
+import { track } from '@vercel/analytics';
+
 /**
  * Basic cookie setter/getter
  */
@@ -88,6 +90,13 @@ export const CookieManager = {
         if (!this.getPrefs().funnel) return;
         this.set('funnel_stage', stage);
         console.log(`(NO $) Funnel Stage tracked: ${stage}`);
+
+        // Push to Vercel Analytics
+        try {
+            track('funnel_stage', { stage });
+        } catch (e) {
+            console.error('Failed to track funnel stage:', e);
+        }
     },
 
     // 3. Personalization & Segmentation
@@ -106,6 +115,12 @@ export const CookieManager = {
     trackEvent(name: string, data: any) {
         if (!this.getPrefs().analytics) return;
         console.log(`(NO $) Analytics Event: ${name}`, data);
-        // Here you would normally push to GA or similar
+
+        // Push to Vercel Analytics
+        try {
+            track(name, data);
+        } catch (e) {
+            console.error('Failed to track event:', e);
+        }
     }
 };

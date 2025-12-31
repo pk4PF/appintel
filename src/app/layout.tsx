@@ -4,6 +4,7 @@ import "./globals.css";
 import SavedAppsRefresher from "./components/SavedAppsRefresher";
 import CookieConsent from "./components/CookieConsent";
 import SegmentationTracker from "./components/SegmentationTracker";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -30,6 +31,7 @@ export default function RootLayout({
         <SavedAppsRefresher />
         <CookieConsent />
         <SegmentationTracker />
+        <Analytics />
       </body>
     </html>
   );
