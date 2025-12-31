@@ -1,12 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { CookieManager } from '@/lib/cookies';
 
 export default function LandingPage() {
     const [email, setEmail] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        // Track first landing
+        if (!CookieManager.get('first_landing')) {
+            CookieManager.set('first_landing', new Date().toISOString());
+            CookieManager.trackFunnelStage('landing_page_entered');
+        }
+    }, []);
 
     const handleCheckout = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -17,6 +26,7 @@ export default function LandingPage() {
             return;
         }
 
+        CookieManager.trackFunnelStage('pricing_viewed');
         setIsLoading(true);
         try {
             const response = await fetch('/api/checkout', {
@@ -27,6 +37,7 @@ export default function LandingPage() {
             const data = await response.json();
 
             if (data.url) {
+                CookieManager.trackFunnelStage('checkout_redirected');
                 window.location.href = data.url;
             } else {
                 setError(data.error || 'Failed to start checkout');

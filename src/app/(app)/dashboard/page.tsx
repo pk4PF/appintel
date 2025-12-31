@@ -1,6 +1,7 @@
 import { getServerClient } from '@/lib/supabase';
 import { createClient } from '@/lib/supabase-server';
 import DashboardList from '@/app/components/DashboardList';
+import SegmentationTracker from '@/app/components/SegmentationTracker';
 
 export const dynamic = 'force-dynamic';
 

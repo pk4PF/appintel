@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createBrowserClient } from '@supabase/ssr';
+import { CookieManager } from '@/lib/cookies';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -31,6 +32,7 @@ export default function LoginPage() {
             if (error) {
                 setError(error.message);
             } else {
+                CookieManager.trackFunnelStage('auth_success');
                 router.push('/dashboard');
                 router.refresh();
             }

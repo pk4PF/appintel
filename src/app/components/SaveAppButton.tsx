@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { saveApp, unsaveApp, isAppSaved } from '@/lib/savedApps';
+import { CookieManager } from '@/lib/cookies';
 
 interface SaveAppButtonProps {
   app: {
@@ -35,9 +36,11 @@ export default function SaveAppButton({
     if (saved) {
       unsaveApp(app.id);
       setSaved(false);
+      CookieManager.trackEvent('app_unsaved', { app_id: app.id, app_name: app.name });
     } else {
       saveApp(app);
       setSaved(true);
+      CookieManager.trackEvent('app_saved', { app_id: app.id, app_name: app.name });
     }
   };
 

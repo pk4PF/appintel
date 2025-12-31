@@ -19,7 +19,7 @@ export default function TermsOfServicePage() {
             {/* Content */}
             <main className="max-w-3xl mx-auto px-6 py-12">
                 <h1 className="text-3xl font-bold mb-8">Terms of Service</h1>
-                <p className="text-[#86868b] mb-8">Last updated: December 30, 2024</p>
+                <p className="text-[#86868b] mb-8">Last updated: December 31, 2025</p>
 
                 <div className="prose prose-invert prose-gray max-w-none space-y-8">
                     <section>
@@ -102,7 +102,7 @@ export default function TermsOfServicePage() {
                         <h2 className="text-xl font-semibold mb-4 text-white">9. Contact</h2>
                         <p className="text-[#a1a1a1] leading-relaxed">
                             For questions about these Terms, contact us at:
-                            <span className="text-[#8b5cf6]"> support@appintel.io</span>
+                            <span className="text-[#8b5cf6]"> paolosoftware13@gmail.com</span>
                         </p>
                     </section>
                 </div>

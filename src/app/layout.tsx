@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SavedAppsRefresher from "./components/SavedAppsRefresher";
 import CookieConsent from "./components/CookieConsent";
+import SegmentationTracker from "./components/SegmentationTracker";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({
         {children}
         <SavedAppsRefresher />
         <CookieConsent />
+        <SegmentationTracker />
       </body>
     </html>
   );
