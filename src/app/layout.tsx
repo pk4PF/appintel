@@ -13,10 +13,32 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "App Intel | Finding iOS Market Gaps",
+    default: "App Intel | Find Your Next $10k/mo App Idea",
     template: "%s | App Intel"
   },
-  description: "Find high-potential opportunities in the iOS App Store. Track emerging trends and user pain points to build your next successful indie app.",
+  description: "We analyze thousands of high-revenue iOS apps so you can find validated ideas that are already making money.",
+  openGraph: {
+    title: "App Intel | Find Your Next $10k/mo App Idea",
+    description: "We analyze thousands of high-revenue iOS apps so you can find validated ideas that are already making money.",
+    url: "https://appintel-pi.vercel.app",
+    siteName: "App Intel",
+    images: [
+      {
+        url: "https://appintel-pi.vercel.app/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "App Intel - Find winning iOS app niches",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "App Intel | Find Your Next $10k/mo App Idea",
+    description: "We analyze thousands of high-revenue iOS apps so you can find validated ideas that are already making money.",
+    images: ["https://appintel-pi.vercel.app/og-image.png"],
+  },
 };
 
 export default function RootLayout({
