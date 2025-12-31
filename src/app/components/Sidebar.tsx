@@ -3,10 +3,12 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { createBrowserClient } from '@supabase/ssr';
+import { useState } from 'react';
 
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
 
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -41,71 +43,112 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 bg-[#121212] border-r border-white/5 flex flex-col sticky top-0 h-screen shrink-0">
-      {/* Logo */}
-      <div className="p-8">
-        <Link href="/dashboard" className="flex items-center gap-3 group active:scale-95 transition-transform">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#8b5cf6] to-[#7c3aed] flex items-center justify-center shadow-lg shadow-[#8b5cf6]/20 group-hover:scale-110 transition-transform">
-            <span className="text-xl">🚀</span>
+    <>
+      {/* Mobile Header Bar */}
+      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-[#121212] border-b border-white/5 px-4 py-3 flex items-center justify-between">
+        <Link href="/dashboard" className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#8b5cf6] to-[#7c3aed] flex items-center justify-center">
+            <span className="text-sm">🚀</span>
           </div>
-          <div>
-            <h1 className="text-lg font-black text-white tracking-tighter leading-tight">App Intel</h1>
-          </div>
+          <span className="text-lg font-black text-white tracking-tighter">App Intel</span>
         </Link>
-      </div>
-
-      {/* Navigation */}
-      <nav className="flex-1 px-4">
-        <ul className="space-y-2">
-          {navItems.map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group active:scale-[0.98] ${isActive
-                    ? 'bg-white/5 text-white border border-white/10 shadow-2xl shadow-black'
-                    : 'text-[#86868b] hover:text-white hover:bg-white/5'
-                    }`}
-                >
-                  <div className={isActive ? 'text-[#a78bfa]' : 'group-hover:text-[#a78bfa] transition-colors duration-300'}>
-                    {item.icon}
-                  </div>
-                  <span className="font-bold text-xs uppercase tracking-widest">{item.label}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
-
-      {/* Sign Out */}
-      <div className="px-4 pb-2">
         <button
-          onClick={handleSignOut}
-          className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-[#86868b] hover:text-[#ff453a] hover:bg-[#ff453a]/10 transition-all duration-300 group active:scale-[0.98]"
+          onClick={() => setIsOpen(!isOpen)}
+          className="p-2 text-white"
         >
-          <div className="group-hover:text-[#ff453a] transition-colors duration-300">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          {isOpen ? (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
-          </div>
-          <span className="font-bold text-xs uppercase tracking-widest">Sign Out</span>
+          ) : (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
         </button>
       </div>
 
-      {/* Footer */}
-      <div className="p-6 pt-2">
-        <div className="px-5 py-5 rounded-2xl bg-white/5 border border-white/5 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-20 h-20 bg-[#8b5cf6]/10 blur-2xl pointer-events-none" />
-          <p className="text-[10px] text-[#86868b] font-black uppercase tracking-widest mb-1">Status</p>
-          <div className="flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#34c759] animate-pulse" />
-            <p className="text-xs text-white font-bold uppercase tracking-tighter">Live Market Data</p>
-          </div>
-          <p className="text-[9px] text-[#48484a] mt-3 font-bold uppercase tracking-widest">Updated hourly</p>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div
+          className="md:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside className={`
+        w-64 bg-[#121212] border-r border-white/5 flex flex-col h-screen shrink-0
+        fixed md:sticky top-0 z-50
+        transition-transform duration-300 ease-in-out
+        ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+      `}>
+        {/* Logo */}
+        <div className="p-8">
+          <Link href="/dashboard" className="flex items-center gap-3 group active:scale-95 transition-transform" onClick={() => setIsOpen(false)}>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#8b5cf6] to-[#7c3aed] flex items-center justify-center shadow-lg shadow-[#8b5cf6]/20 group-hover:scale-110 transition-transform">
+              <span className="text-xl">🚀</span>
+            </div>
+            <div>
+              <h1 className="text-lg font-black text-white tracking-tighter leading-tight">App Intel</h1>
+            </div>
+          </Link>
         </div>
-      </div>
-    </aside>
+
+        {/* Navigation */}
+        <nav className="flex-1 px-4">
+          <ul className="space-y-2">
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group active:scale-[0.98] ${isActive
+                      ? 'bg-white/5 text-white border border-white/10 shadow-2xl shadow-black'
+                      : 'text-[#86868b] hover:text-white hover:bg-white/5'
+                      }`}
+                  >
+                    <div className={isActive ? 'text-[#a78bfa]' : 'group-hover:text-[#a78bfa] transition-colors duration-300'}>
+                      {item.icon}
+                    </div>
+                    <span className="font-bold text-xs uppercase tracking-widest">{item.label}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        {/* Sign Out */}
+        <div className="px-4 pb-2">
+          <button
+            onClick={handleSignOut}
+            className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-[#86868b] hover:text-[#ff453a] hover:bg-[#ff453a]/10 transition-all duration-300 group active:scale-[0.98]"
+          >
+            <div className="group-hover:text-[#ff453a] transition-colors duration-300">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </div>
+            <span className="font-bold text-xs uppercase tracking-widest">Sign Out</span>
+          </button>
+        </div>
+
+        {/* Footer */}
+        <div className="p-6 pt-2">
+          <div className="px-5 py-5 rounded-2xl bg-white/5 border border-white/5 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-20 h-20 bg-[#8b5cf6]/10 blur-2xl pointer-events-none" />
+            <p className="text-[10px] text-[#86868b] font-black uppercase tracking-widest mb-1">Status</p>
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#34c759] animate-pulse" />
+              <p className="text-xs text-white font-bold uppercase tracking-tighter">Live Market Data</p>
+            </div>
+            <p className="text-[9px] text-[#48484a] mt-3 font-bold uppercase tracking-widest">Updated hourly</p>
+          </div>
+        </div>
+      </aside>
+    </>
   );
 }

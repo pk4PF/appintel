@@ -8,7 +8,7 @@ export default function AppLayout({
     return (
         <div className="flex min-h-screen bg-black">
             <Sidebar />
-            <main className="flex-1 min-h-screen relative overflow-x-hidden">
+            <main className="flex-1 min-h-screen relative overflow-x-hidden pt-14 md:pt-0">
                 {/* Dark Horizon Glow - Global Background */}
                 <div
                     className="fixed inset-0 pointer-events-none"
