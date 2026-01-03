@@ -12,6 +12,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'http://localhost:3000'
+  ),
   title: {
     default: "App Intel | Find Your Next $10k/mo App Idea",
     template: "%s | App Intel"
@@ -20,11 +25,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: "App Intel | Find Your Next $10k/mo App Idea",
     description: "We analyze thousands of high-revenue iOS apps so you can find validated ideas that are already making money.",
-    url: "https://appintel-pi.vercel.app",
     siteName: "App Intel",
     images: [
       {
-        url: "https://appintel-pi.vercel.app/og-image.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "App Intel - Find winning iOS app niches",
@@ -37,7 +41,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "App Intel | Find Your Next $10k/mo App Idea",
     description: "We analyze thousands of high-revenue iOS apps so you can find validated ideas that are already making money.",
-    images: ["https://appintel-pi.vercel.app/og-image.png"],
+    images: ["/og-image.png"],
   },
 };
 
