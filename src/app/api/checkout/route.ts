@@ -30,7 +30,7 @@ export async function POST(request: Request) {
                             name: 'App Intel - Lifetime Access',
                             description: 'Unlimited access to app insights and spinoff ideas.',
                         },
-                        unit_amount: 1900, // $19.00 Lifetime Access
+                        unit_amount: 1200, // $12.00 Lifetime Access
                     },
                     quantity: 1,
                 },

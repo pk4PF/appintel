@@ -157,7 +157,7 @@ export default function LandingPage() {
                                 <div className="absolute top-0 right-0 w-24 h-24 bg-[#5856d6]/10 blur-[40px]" />
 
                                 <div className="flex items-baseline gap-2 mb-6">
-                                    <span className="text-5xl font-black tracking-tighter text-[#5c7cff]">$19</span>
+                                    <span className="text-5xl font-black tracking-tighter text-[#5c7cff]">$12</span>
                                     <span className="text-[#86868b] font-bold text-base uppercase tracking-widest">USD</span>
                                 </div>
 
