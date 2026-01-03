@@ -12,11 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : 'http://localhost:3000'
-  ),
+  metadataBase: new URL('https://appintel.net'),
   title: {
     default: "App Intel | Find Your Next $10k/mo App Idea",
     template: "%s | App Intel"
