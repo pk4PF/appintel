@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 
   return {
     title: app ? `${app.name} | App Intel Analysis` : "App Intelligence Analysis",
-    description: `See the revenue data and AI blueprints for ${app?.name || 'this app'}. Find the market gaps and build a better spinoff.`,
+    description: `See the revenue data and opportunity analysis for ${app?.name || 'this app'}. Find the market gaps and build a better alternative.`,
   };
 }
 
@@ -116,14 +116,15 @@ export default async function AppDetailPage({ params }: { params: Promise<{ id: 
   const isAdmin = !!(user && ADMIN_EMAILS.includes(user.email?.toLowerCase() || ''));
   const isPremium = !!(user?.user_metadata?.is_premium || isAdmin);
 
-  // Fetch app details
+  // Fetch app details and insights
   const { data: app, error } = await supabase
     .from('apps')
     .select(`
       *,
       categories!apps_category_id_fkey (name, slug),
       app_metrics (rating, rating_count, downloads_estimate, revenue_estimate, date),
-      opportunity_scores (score, momentum, demand_signal, user_satisfaction, monetization_potential, competitive_density, calculated_at)
+      opportunity_scores (score, momentum, demand_signal, user_satisfaction, monetization_potential, competitive_density, calculated_at),
+      review_insights (*)
     `)
     .eq('id', id)
     .single();
@@ -132,8 +133,9 @@ export default async function AppDetailPage({ params }: { params: Promise<{ id: 
     notFound();
   }
 
-  const appData = app as unknown as AppDetail;
-  const metrics = appData.app_metrics?.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0];
+  const appData = app as any;
+  const metrics = appData.app_metrics?.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime())[0];
+
 
   // Calculate dynamic metrics
   const ratingCount = metrics?.rating_count || 0;
@@ -259,6 +261,8 @@ export default async function AppDetailPage({ params }: { params: Promise<{ id: 
               color="purple"
             />
           </div>
+
+
 
         </div>
       </div>
